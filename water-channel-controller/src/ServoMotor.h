@@ -2,13 +2,18 @@
 #define __SERVO_H__
 
 #include "Deactivable.h";
+#include <Servo.h>;
 
 class ServoMotor : public Deactivable {
     public:
-        void changePosition(int pos);
+        ServoMotor(int pin);
+        void changePosition(int angle);
         int getPosition();
+        void activate();
+        void deactivate();
     private:
         int pin;
+        Servo servo;
 };
 
 #endif

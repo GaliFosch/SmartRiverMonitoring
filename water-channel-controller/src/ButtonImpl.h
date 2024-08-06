@@ -10,6 +10,8 @@ public:
   ButtonImpl(int pin);
   virtual bool isPressed();
   virtual void notifyInterrupt(int pin);
+  void activate() { Deactivable::activate(); };
+  void deactivate() { Deactivable::deactivate(); };
   
 private:
   int pin;

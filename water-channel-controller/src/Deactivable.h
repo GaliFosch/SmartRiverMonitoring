@@ -3,8 +3,8 @@
 
 class Deactivable {
     public:
-        virtual void deactivate();
-        virtual void activate();
+        virtual void deactivate() { isActive = false; return; };
+        virtual void activate() { isActive = true; return; };
     protected:
         int isActive;
 };
