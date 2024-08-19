@@ -1,5 +1,5 @@
-*.py    eol="lf"
-*.c     eol="lf"
-*.h     eol="lf"
-*.cpp   eol="lf"
-*.hpp   eol="lf"
+*.py    eol=lf
+*.c     eol=lf
+*.h     eol=lf
+*.cpp   eol=lf
+*.hpp   eol=lf
