@@ -1,4 +1,7 @@
 import tkinter as tk
+from matplotlib.figure import Figure 
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,  
+NavigationToolbar2Tk)
 
 window = tk.Tk()
 window.geometry("500x200")
@@ -27,5 +30,16 @@ slider = tk.Scale(master=window, from_=0, to=100, tickinterval=10, orient="horiz
 slider.grid(row=2, column=0)
 sliderLabel = tk.Label(master=window, text=f"Selected opening level: " + currOpeningLevel.get(), justify="left", anchor="w")
 sliderLabel.grid(sticky="w", row=3, column=0)
+
+# Setup graph representation
+graph_frame = tk.Frame(master=window)
+graph_frame.grid(row=4, column=0)
+
+figure = Figure(figsize=(5,5), dpi=100)
+y = [i**2 for i in range(101)]
+plot = figure.add_subplot(111)
+canvas = FigureCanvasTkAgg(figure, master=graph_frame)
+canvas.draw()
+canvas.get_tk_widget().pack() 
 
 window.mainloop()
