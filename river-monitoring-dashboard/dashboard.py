@@ -4,7 +4,7 @@ from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
 NavigationToolbar2Tk)
 
 window = tk.Tk()
-window.geometry("500x200")
+window.geometry("500x600")
 window.title("River Monitoring Dashboard")
 
 currOpeningLevel = tk.StringVar()
@@ -32,14 +32,12 @@ sliderLabel = tk.Label(master=window, text=f"Selected opening level: " + currOpe
 sliderLabel.grid(sticky="w", row=3, column=0)
 
 # Setup graph representation
-graph_frame = tk.Frame(master=window)
-graph_frame.grid(row=4, column=0)
-
 figure = Figure(figsize=(5,5), dpi=100)
 y = [i**2 for i in range(101)]
 plot = figure.add_subplot(111)
-canvas = FigureCanvasTkAgg(figure, master=graph_frame)
+plot.plot(y)
+canvas = FigureCanvasTkAgg(figure, master=window)
 canvas.draw()
-canvas.get_tk_widget().pack() 
+canvas.get_tk_widget().grid(row=4, column=0)
 
 window.mainloop()
