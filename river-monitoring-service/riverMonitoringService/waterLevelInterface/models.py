@@ -1,3 +1,5 @@
 from django.db import models
 
-# Create your models here.
+class Mesurment(models.Model):
+    value = models.DecimalField(max_digits=6, decimal_places=3)
+    date = models.DateTimeField()
