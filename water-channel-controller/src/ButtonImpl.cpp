@@ -15,13 +15,11 @@ bool ButtonImpl::isPressed(){
 }
 
 void ButtonImpl::notifyInterrupt(int pin){
-  if(this->isActive) {
-    long curr = millis();
-    if (curr - lastEventTime > DEBOUNCING_TIME){
-          lastEventTime = curr;
-          Event* ev;
-          ev = new ButtonPress(this);
-          this->generateEvent(ev);
-    }
+  long curr = millis();
+  if (curr - lastEventTime > DEBOUNCING_TIME){
+        lastEventTime = curr;
+        Event* ev;
+        ev = new ButtonPress(this);
+        this->generateEvent(ev);
   }
 }

@@ -52,7 +52,7 @@ class ChannelControllerFSM : public AsyncFSM {
           else if (ev->getType() == POT_MOVED_EVENT) {
             // Check value of potentiometer and move servo
           }
-          else if (ev->getType() == COMM_RECEIVED_EVENT) {
+          else if (ev->getType() == POS_RECEIVED_EVENT) {
             this->lcd->clear();
             this->lcd->setCursor(2,1);
             this->lcd->print("Manual");
