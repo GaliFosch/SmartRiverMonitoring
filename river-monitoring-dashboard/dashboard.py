@@ -9,7 +9,7 @@ currState = tk.StringVar()
 
 # This is the command function for the slider, which updates the label with the current value
 def sliderLabelUpdate(newvalue):
-    sliderLabel.config(text=f"Selected opening level: {newvalue}")
+    sliderLabel.config(text=f"Selected opening level: {newvalue}%")
 
 def update():
     window.after(100, update)
