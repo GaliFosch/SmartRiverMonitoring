@@ -1,11 +1,10 @@
 #include "ButtonImpl.h"
 #include "Arduino.h"
 
-#define DEBOUNCING_TIME 20
+#define DEBOUNCING_TIME 1000
 
 ButtonImpl::ButtonImpl(int pin){
   this->pin = pin;
-  this->isInAuto = true;
   pinMode(pin, INPUT);  
   bindInterrupt(pin);
   lastEventTime = millis();
@@ -21,12 +20,7 @@ void ButtonImpl::notifyInterrupt(int pin){
     if (curr - lastEventTime > DEBOUNCING_TIME){
           lastEventTime = curr;
           Event* ev;
-          if (isInAuto){
-            ev = new ManualMode(this);
-          } else {
-            ev = new AutoMode(this);
-          }
-          isInAuto = !isInAuto;
+          ev = new ButtonPress(this);
           this->generateEvent(ev);
     }
   }

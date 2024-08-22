@@ -1,4 +1,4 @@
-#include "ServoMotor.h";
+#include "ServoMotor.h"
 
 ServoMotor::ServoMotor(int pin) {
     this->pin = pin;

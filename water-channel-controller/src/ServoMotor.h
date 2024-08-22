@@ -1,8 +1,8 @@
 #ifndef __SERVO_H__
 #define __SERVO_H__
 
-#include "Deactivable.h";
-#include <Servo.h>;
+#include "Deactivable.h"
+#include <Servo.h>
 
 class ServoMotor : public Deactivable {
     public:
