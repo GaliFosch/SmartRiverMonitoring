@@ -4,6 +4,7 @@
 #include <console.h>
 #include <ButtonImpl.h>
 #include <LiquidCrystal_I2C.h>
+#include <Potentiometer.h>
 
 #define BUTTON_PIN 3
 #define POT_PIN A1
@@ -19,17 +20,20 @@ class ChannelControllerFSM : public AsyncFSM {
   public:
     // TODO: ADD POTENTIOMETER
     ChannelControllerFSM (ButtonImpl* button, Console* console, ServoMotor* servo,
-                          LiquidCrystal_I2C* lcd) {
+                          LiquidCrystal_I2C* lcd, Potentiometer* pot) {
       this->button = button;
       this->console = console;
       this->servo = servo;
       this->lcd = lcd;
+      this->pot = pot;
+      this->currState = AUTOMATIC;
+
+      this->button->registerObserver(this);
+
       this->lcd->init();
       this->lcd->backlight();
-      this->button->registerObserver(this);
       this->lcd->setCursor(2,1);
       this->lcd->print("Automatic");
-      this->currState = AUTOMATIC;
     }
 
     void handleEvent(Event* ev) {
@@ -50,7 +54,7 @@ class ChannelControllerFSM : public AsyncFSM {
             this->currState = AUTOMATIC;
           }
           else if (ev->getType() == POT_MOVED_EVENT) {
-            // Check value of potentiometer and move servo
+            // idkkkkkk
           }
           else if (ev->getType() == POS_RECEIVED_EVENT) {
             this->lcd->clear();
@@ -69,6 +73,7 @@ class ChannelControllerFSM : public AsyncFSM {
     ButtonImpl* button;
     Console* console;
     LiquidCrystal_I2C* lcd;
+    Potentiometer* pot;
     State currState;
 };
 
@@ -79,7 +84,8 @@ void setup() {
   Console* console = new Console();
   ServoMotor* servo = new ServoMotor(SERVO_PIN);
   LiquidCrystal_I2C* lcd = new LiquidCrystal_I2C(0x27,20,4);
-  fsm = new ChannelControllerFSM(button, console, servo, lcd);
+  Potentiometer* pot = new Potentiometer(POT_PIN);
+  fsm = new ChannelControllerFSM(button, console, servo, lcd, pot);
 }
 
 void loop() {

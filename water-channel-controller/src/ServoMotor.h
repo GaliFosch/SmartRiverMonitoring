@@ -6,9 +6,10 @@
 class ServoMotor {
     public:
         ServoMotor(int pin);
-        void changePosition(int angle);
+        void changePosition(int percent);
         int getPosition();
     private:
+        int fromPercentToAngle(int percent);
         int pin;
         Servo servo;
 };

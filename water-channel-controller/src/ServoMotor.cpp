@@ -1,12 +1,17 @@
 #include "ServoMotor.h"
+#include <Arduino.h>
 
 ServoMotor::ServoMotor(int pin) {
     this->pin = pin;
     this->servo.attach(pin);
 }
 
-void ServoMotor::changePosition(int angle) {
-    this->servo.write(angle);
+int ServoMotor::fromPercentToAngle(int percent) {
+    return map(percent, 0, 100, 0, 180);
+}
+
+void ServoMotor::changePosition(int percent) {
+    this->servo.write(this->fromPercentToAngle(percent));
 }
 
 int ServoMotor::getPosition() {
