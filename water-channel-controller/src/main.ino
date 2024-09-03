@@ -133,6 +133,7 @@ void setup() {
 
 void loop() {
   if (millis() - timeLastPotCheck > POLL_PERIOD) {
+    timeLastPotCheck = millis();
     pot->notifyEvent();
   }
   fsm->checkEvents();
