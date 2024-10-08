@@ -10,10 +10,10 @@ void StateTask::init(int period) {
     Task::init(period);
     this->red->switchOn();
     this->green->switchOff();
-    currState = DISCONNECTED;
 }
 
 void StateTask::tick() {
+    extern State currState;
     switch (currState) {
         case DISCONNECTED:
             // if it connects
