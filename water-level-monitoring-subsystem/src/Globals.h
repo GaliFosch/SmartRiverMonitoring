@@ -6,6 +6,6 @@ enum State {
     CONNECTED
 };
 
-State currState;
+extern State currState;
 
 #endif

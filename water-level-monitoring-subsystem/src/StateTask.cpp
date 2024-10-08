@@ -1,6 +1,9 @@
 #include "StateTask.h"
 #include "Globals.h"
 
+// TODO: Remove this import
+#include <Arduino.h> 
+
 StateTask::StateTask(int redPin, int greenPin) {
     this->red = new Led(redPin);
     this->green = new Led(greenPin);
@@ -13,10 +16,9 @@ void StateTask::init(int period) {
 }
 
 void StateTask::tick() {
-    extern State currState;
     switch (currState) {
         case DISCONNECTED:
-            // if it connects
+            Serial.println("DEBUG State: DISCONNECTED");
             if (1) {
                 currState = CONNECTED;
                 this->red->switchOff();
@@ -24,6 +26,7 @@ void StateTask::tick() {
             }
             break;
         case CONNECTED:
+            Serial.println("DEBUG State: CONNECTED");
             break;
         default:
             break;
