@@ -1,17 +1,10 @@
 #include "Scheduler.h"
 #include <Ticker.h>
 
-volatile bool timerFlag;
-
-void timerHandler(void){
-  timerFlag = true;
-}
 
 void Scheduler::init(int basePeriod){
   this->basePeriod = basePeriod;
-  timerFlag = false;
-  long period = 1000l*basePeriod;
-  ticker.attach(period, timerHandler);
+  this->lastScheduled = millis();
   nTasks = 0;
 }
 
@@ -26,11 +19,9 @@ bool Scheduler::addTask(Task* task){
 }
   
 void Scheduler::schedule(){   
-  while (!timerFlag){
-    Serial.println("ue");
+  if (millis() - lastScheduled < basePeriod){
+    return;
   }
-  timerFlag = false;
-
   for (int i = 0; i < nTasks; i++){
     if (taskList[i]->updateAndCheckTime(basePeriod)){
       taskList[i]->tick();

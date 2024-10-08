@@ -2,13 +2,12 @@
 #define __SCHEDULER__
 
 #include "Task.h"
-#include <Ticker.h>
 
 #define MAX_TASKS 50
 
 class Scheduler {
-  Ticker ticker;
-  int basePeriod;
+  unsigned int lastScheduled;
+  unsigned int basePeriod;
   int nTasks;
   Task* taskList[MAX_TASKS];  
 
