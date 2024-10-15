@@ -3,6 +3,8 @@
 
 #include "Task.h"
 #include "Led.h"
+#include <ESP8266WiFi.h>
+#include <PubSubClient.h>
 
 class StateTask : public Task {
     public:
@@ -10,8 +12,11 @@ class StateTask : public Task {
         void init(int period);
         void tick();
     private:
+        const char* ssid = "LaSaphiGamer";
+        const char* password = "scva1852";
         Led* red;
         Led* green;
+        void attemptConnection();
 };
 
 #endif

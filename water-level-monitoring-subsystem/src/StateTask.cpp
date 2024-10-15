@@ -13,13 +13,14 @@ void StateTask::init(int period) {
     Task::init(period);
     this->red->switchOn();
     this->green->switchOff();
+    attemptConnection();
 }
 
 void StateTask::tick() {
     switch (currState) {
         case DISCONNECTED:
             Serial.println("DEBUG State: DISCONNECTED");
-            if (1) {
+            if (WiFi.status() == WL_CONNECTED) {
                 currState = CONNECTED;
                 this->red->switchOff();
                 this->green->switchOn();
@@ -27,8 +28,20 @@ void StateTask::tick() {
             break;
         case CONNECTED:
             Serial.println("DEBUG State: CONNECTED");
+            if (WiFi.status() != WL_CONNECTED) {
+                currState = DISCONNECTED;
+                this->red->switchOn();
+                this->green->switchOff();
+            }
             break;
         default:
             break;
     }
+}
+
+void StateTask::attemptConnection() { 
+    Serial.println(String("DEBUG: Connecting to ") + ssid);
+
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(ssid, password);
 }
