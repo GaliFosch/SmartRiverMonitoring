@@ -19,6 +19,10 @@ MQTT_KEEPALIVE = 60
 MQTT_USER = ''
 MQTT_PASSWORD = ''
 
+#SERIAL settings
+SERIAL_PORT = ''
+SERIAL_BAUDRATE = 115200
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
