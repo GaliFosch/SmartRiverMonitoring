@@ -3,7 +3,6 @@ from django.utils import timezone
 import json
 from django.http import JsonResponse
 from .mqtt import client as mqtt_client
-from models import Measurment
 
 
 def publish_message(request):
@@ -12,6 +11,7 @@ def publish_message(request):
     return JsonResponse({'code': rc})
 
 def recentMeasurments(request):
+    from .models import Measurment
     oneHourAgo = timezone.now() - timedelta(hours=1)
     recentMeasurments = Measurment.objects.filter(timestamp__gte=oneHourAgo)
     data = [
