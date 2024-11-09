@@ -1,5 +1,6 @@
 from django.conf import settings
 import paho.mqtt.client as mqtt
+from models import Measurment
 
 def on_connect(mqtt_client, userdata, flags, rc):
     if rc == 0:
@@ -9,7 +10,12 @@ def on_connect(mqtt_client, userdata, flags, rc):
         print('Bad connection. Code:', rc)
 
 def on_message(mqtt_client, userdata, msg):
-    print(f'Received message on topic: {msg.topic} with payload: {msg.payload}')
+    try:
+        value = float(msg.payload.decode())
+        measurment = Measurment(value)
+        measurment.save()
+    except:
+        print("ERROR: received non numeric data")
     
 client = mqtt.Client()
 client.on_connect = on_connect
