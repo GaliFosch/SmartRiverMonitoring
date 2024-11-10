@@ -1,4 +1,4 @@
-import { waterLevelIndex } from "./config";
+const waterLevelIndex = ""
 document.addEventListener("DOMContentLoaded", ()=>{
     const ctx = document
         .getElementById('waterLevelChart')
