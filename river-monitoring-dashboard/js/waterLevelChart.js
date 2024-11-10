@@ -1,3 +1,4 @@
+import { waterLevelIndex } from "./config";
 document.addEventListener("DOMContentLoaded", ()=>{
     const ctx = document
         .getElementById('waterLevelChart')
@@ -37,7 +38,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     });
 
     function fetchData() {
-        fetch('example.html')
+        fetch(waterLevelIndex)
             .then(response => response.json()) 
             .then(newData => {
                 myChart.data.labels = [];
