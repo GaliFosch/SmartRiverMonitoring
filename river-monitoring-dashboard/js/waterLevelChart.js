@@ -58,8 +58,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
             })
             .catch(error => console.error('Error fetching data:', error));
     }
-
-    // Set interval to periodically fetch and update chart data (e.g., every 5 seconds)
     setInterval(fetchData, 5000);
 
 })
