@@ -12,6 +12,16 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+# WaterLevels
+WL1 = 1
+WL2 = 2
+WL3 = 3
+WL4 = 4
+
+# Frequencies
+F1 = 1
+F2 = 2
+
 # MQTT broker settings
 MQTT_SERVER = 'localhost'
 MQTT_PORT = 1883
