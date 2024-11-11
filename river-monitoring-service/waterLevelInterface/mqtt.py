@@ -1,6 +1,8 @@
 from django.conf import settings
 import paho.mqtt.client as mqtt
 
+lastMeasurment = 0
+
 def on_connect(mqtt_client, userdata, flags, rc):
     if rc == 0:
         print('Connected successfully')
@@ -10,9 +12,10 @@ def on_connect(mqtt_client, userdata, flags, rc):
 
 def on_message(mqtt_client, userdata, msg):
     from .models import Measurment
+    global lastMeasurment
     try:
-        value = float(msg.payload.decode())
-        measurment = Measurment(value)
+        lastMeasurment = float(msg.payload.decode())
+        measurment = Measurment(lastMeasurment)
         measurment.save()
     except:
         print("ERROR: received non numeric data")
@@ -26,3 +29,6 @@ client.connect(
     port=settings.MQTT_PORT,
     keepalive=settings.MQTT_KEEPALIVE
 )
+
+def signalFrequenceChange(frequency):
+    return client.publish("RMS/waterlevel/frequency", str(frequency))
