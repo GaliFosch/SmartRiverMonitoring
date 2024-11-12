@@ -23,7 +23,7 @@ F1 = 1
 F2 = 2
 
 # MQTT broker settings
-MQTT_SERVER = 'localhost'
+MQTT_SERVER = 'broker.mqtt-dashboard.com'
 MQTT_PORT = 1883
 MQTT_KEEPALIVE = 60
 MQTT_USER = ''

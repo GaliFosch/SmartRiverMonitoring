@@ -33,7 +33,7 @@ void SonarTask::tick() {
 }
 
 void SonarTask::sendMessage() {
-    client.publish(topic, "DEBUG: Ciaissimo");
+    client.publish(topic, "16");
 }
 
 void SonarTask::reconnect() {

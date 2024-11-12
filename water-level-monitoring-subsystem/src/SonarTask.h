@@ -15,7 +15,7 @@ class SonarTask : public Task {
     private:
         Sonar* sonar;
         const char* mqtt_server = "broker.mqtt-dashboard.com";
-        const char* topic = "esiot-2023";
+        const char* topic = "SRM/waterlevel";
         void sendMessage();
         void reconnect();
 

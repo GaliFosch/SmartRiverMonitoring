@@ -22,6 +22,7 @@ void Scheduler::schedule(){
   if (millis() - lastScheduled < basePeriod){
     return;
   }
+  lastScheduled = millis();
   for (int i = 0; i < nTasks; i++){
     if (taskList[i]->updateAndCheckTime(basePeriod)){
       taskList[i]->tick();
