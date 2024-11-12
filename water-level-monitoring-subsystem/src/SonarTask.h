@@ -14,6 +14,11 @@ class SonarTask : public Task {
         void tick();
     private:
         Sonar* sonar;
+        const char* mqtt_server = "broker.mqtt-dashboard.com";
+        const char* topic = "esiot-2023";
+        void sendMessage();
+        void reconnect();
+
 };
 
 #endif

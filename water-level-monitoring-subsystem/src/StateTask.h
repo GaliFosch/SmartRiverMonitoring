@@ -12,8 +12,8 @@ class StateTask : public Task {
         void init(int period);
         void tick();
     private:
-        const char* ssid = "LaSaphiGamer";
-        const char* password = "scva1852";
+        const char* ssid = "Galileo.Cell";
+        const char* password = "WIFI1331";
         Led* red;
         Led* green;
         void attemptConnection();
