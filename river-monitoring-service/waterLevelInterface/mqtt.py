@@ -18,10 +18,10 @@ def on_message(mqtt_client, userdata, msg):
         data = json.loads(msg.payload.decode())
         
         if 'value' in data and isinstance(data['value'], (int, float)):
-            lastMeasurment = data['value']
+            lastMeasurement = data['value']
             
-            measurment = Measurment(value=lastMeasurment)
-            measurment.save()
+            measurement = Measurement(value=lastMeasurement)
+            measurement.save()
         else:
             print("ERROR: received non-numeric data")
     except json.JSONDecodeError as e:
