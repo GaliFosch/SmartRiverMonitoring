@@ -33,7 +33,10 @@ void SonarTask::tick() {
 }
 
 void SonarTask::sendMessage() {
-    client.publish(topic, "16");
+    float value = this->sonar->readValue();
+    String payload = "{\"value\": " + String(value, 2) + "}";
+    Serial.println(payload);
+    client.publish(topic, payload.c_str());
 }
 
 void SonarTask::reconnect() {
@@ -42,6 +45,9 @@ void SonarTask::reconnect() {
     if (client.connect(clientId.c_str())) {
         Serial.println("DEBUG: mqtt connection started");
         client.subscribe(topic);
-    }
+    } else {
+        Serial.print("MQTT connection failed, rc=");
+        Serial.println(client.state());
+}
 }
 
