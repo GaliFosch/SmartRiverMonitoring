@@ -10,16 +10,16 @@ def publish_message(request):
     rc, mid = mqtt_client.publish(request_data['topic'], request_data['msg'])
     return JsonResponse({'code': rc})
 
-def recentMeasurments(request):
-    from .models import Measurment
+def recentMeasurements(request):
+    from .models import Measurement
     oneHourAgo = timezone.now() - timedelta(hours=1)
-    recentMeasurments = Measurment.objects.filter(timestamp__gte=oneHourAgo)
+    recentMeasurements = Measurement.objects.filter(timestamp__gte=oneHourAgo)
     data = [
         {
-            "value": measurment.value,
-            "timestamp": measurment.timestamp
+            "value": measurement.value,
+            "timestamp": measurement.timestamp
         }
-        for measurment in recentMeasurments
+        for measurement in recentMeasurements
     ]
 
     return JsonResponse(data, safe=False)
