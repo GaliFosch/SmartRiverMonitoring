@@ -1,35 +1,38 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>River Monitoring Dashboard</title>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="js/waterLevelChart.js"></script>
-    </head>
-    <body>
-        <h1>River Monitoring Dashboard</h1>
-        <section>
-            <h2>Water Level</h2>
-            <!--Graficco del livello dell'acqua-->
-            <div>
-                <canvas id="waterLevelChart"></canvas>
-            </div>
-        </section>
-        <section>
-            <h2>Data</h2>
-            <table>
-                <tr>
-                    <td>State</td>
-                    <td id="state">NORMAL</td><!--TODO-->
-                </tr>
-                <tr>
-                    <td>Current Water Level</td>
-                    <td id="currentWaterLevel">num</td>
-                </tr>
-                <tr>
-                    <td>valve opening level</td>
-                    <td id="currentGateOpening">num</td><!--TODO-->
-                </tr>
-            </table>
-        </section>
-    </body>
+
+<head>
+    <title>River Monitoring Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/waterLevelChart.js"></script>
+</head>
+
+<body>
+    <h1>River Monitoring Dashboard</h1>
+    <section>
+        <h2>Water Level</h2>
+        <!--Grafico del livello dell'acqua-->
+        <div>
+            <canvas id="waterLevelChart"></canvas>
+        </div>
+    </section>
+    <section>
+        <h2>Data</h2>
+        <table>
+            <tr>
+                <td>State</td>
+                <td id="state">NORMAL</td><!--TODO-->
+            </tr>
+            <tr>
+                <td>Current Water Level</td>
+                <td id="currentWaterLevel">num</td>
+            </tr>
+            <tr>
+                <td>valve opening level</td>
+                <td id="currentGateOpening">num</td><!--TODO-->
+            </tr>
+        </table>
+    </section>
+</body>
+
 </html>
