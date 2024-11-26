@@ -14,8 +14,10 @@ def get_data(request):
     cursor = conn.cursor()
     
     # query
-    query = "SELECT * FROM waterLevelInterface_measurement WHERE timestamp >= ?"
-    cursor.execute(query, (tenMinutesAgo.strftime('%Y-%m-%d %H:%M:%S'),))
+    query = "SELECT * FROM waterLevelInterface_measurement LIMIT 30"
+    cursor.execute(query)
+    # query = "SELECT * FROM waterLevelInterface_measurement WHERE timestamp >= ?"
+    # cursor.execute(query, (tenMinutesAgo.strftime('%Y-%m-%d %H:%M:%S'),))
     rows = cursor.fetchall()
     
     # set up conversion to json
@@ -24,8 +26,7 @@ def get_data(request):
     for row in rows:
         row_dict = dict(zip(col_names, row))
         json_obj.append(row_dict)
-    
-    print(json_obj)
+
     response = HttpResponse(json.dumps(json_obj), content_type="application/json")
     return response
     
