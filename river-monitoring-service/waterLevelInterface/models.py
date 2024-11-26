@@ -8,6 +8,6 @@ class Measurement(models.Model):
     timestamp = models.DateTimeField()
     
     def save(self, *args, **kwargs):
-    # Remove milliseconds
+        # Remove milliseconds
         self.timestamp = datetime.datetime.now(tz=timezone.utc).replace(microsecond=0)
         super(Measurement, self).save(*args, **kwargs)
