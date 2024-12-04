@@ -121,7 +121,7 @@ class ChannelControllerFSM : public AsyncFSM {
 Potentiometer* pot = new Potentiometer(POT_PIN);
 ChannelControllerFSM* fsm;
 long timeLastPotCheck;
-
+ServoMotor* servo;
 void setup() {
   ButtonImpl* button = new ButtonImpl(BUTTON_PIN);
   Console* console = new Console();

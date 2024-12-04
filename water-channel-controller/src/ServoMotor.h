@@ -10,6 +10,8 @@ class ServoMotor {
         int getPosition();
     private:
         int fromPercentToAngle(int percent);
+        void on();
+        void off();
         int pin;
         Servo servo;
 };

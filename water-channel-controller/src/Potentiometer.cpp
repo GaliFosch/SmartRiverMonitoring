@@ -15,6 +15,7 @@ void Potentiometer::notifyEvent() {
     if (this->lastValue != newValue) {
         Serial.println("DEBUG: Inside if clause in Potentiometer::notifyEvent()");
         this->lastValue = newValue;
+        Serial.println(this->lastValue);
         Event* ev;
         ev = new PotentiometerCheck(this);
         this->generateEvent(ev);
