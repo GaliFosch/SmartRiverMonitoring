@@ -14,10 +14,10 @@ def get_data(request):
     cursor = conn.cursor()
     
     # query
-    query = "SELECT * FROM waterLevelInterface_measurement LIMIT 30"
-    cursor.execute(query)
-    # query = "SELECT * FROM waterLevelInterface_measurement WHERE timestamp >= ?"
-    # cursor.execute(query, (tenMinutesAgo.strftime('%Y-%m-%d %H:%M:%S'),))
+    # query = "SELECT * FROM waterLevelInterface_measurement LIMIT 30"
+    # cursor.execute(query)
+    query = "SELECT * FROM waterLevelInterface_measurement WHERE timestamp >= ?"
+    cursor.execute(query, (tenMinutesAgo.strftime('%Y-%m-%d %H:%M:%S'),))
     rows = cursor.fetchall()
     
     # set up conversion to json
