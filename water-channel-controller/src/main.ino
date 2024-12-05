@@ -57,6 +57,10 @@ class ChannelControllerFSM : public AsyncFSM {
       return this->pot;
     }
 
+    State getCurrentState() {
+      return currState;
+    }
+
   private:
     ServoMotor* servo;
     ButtonImpl* button;
@@ -121,20 +125,22 @@ class ChannelControllerFSM : public AsyncFSM {
 Potentiometer* pot = new Potentiometer(POT_PIN);
 ChannelControllerFSM* fsm;
 long timeLastPotCheck;
-
+ServoMotor* servo;
 void setup() {
   ButtonImpl* button = new ButtonImpl(BUTTON_PIN);
   Console* console = new Console();
   ServoMotor* servo = new ServoMotor(SERVO_PIN);
   LiquidCrystal_I2C* lcd = new LiquidCrystal_I2C(0x27,20,4);
   fsm = new ChannelControllerFSM(button, console, servo, lcd, pot);
+  
   timeLastPotCheck = millis();
 }
 
 void loop() {
-  if (millis() - timeLastPotCheck > POLL_PERIOD) {
+  if ((fsm->getCurrentState()==MANUAL)&&(millis() - timeLastPotCheck > POLL_PERIOD)) {
     timeLastPotCheck = millis();
     pot->notifyEvent();
   }
   fsm->checkEvents();
+  delay(50);
 }

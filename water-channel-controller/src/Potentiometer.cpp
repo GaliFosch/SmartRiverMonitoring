@@ -3,6 +3,7 @@
 
 Potentiometer::Potentiometer(int pin) {
     this->pin = pin;
+    this->bindInterrupt(pin);
 }
 
 int Potentiometer::readValue() {
@@ -15,6 +16,7 @@ void Potentiometer::notifyEvent() {
     if (this->lastValue != newValue) {
         Serial.println("DEBUG: Inside if clause in Potentiometer::notifyEvent()");
         this->lastValue = newValue;
+        Serial.println(this->lastValue);
         Event* ev;
         ev = new PotentiometerCheck(this);
         this->generateEvent(ev);
@@ -26,7 +28,6 @@ int Potentiometer::getValue() {
 }
 
 void Potentiometer::notifyInterrupt(int pin) {
-    // DEBUG: this stays empty until I can figure out how it works
-    int p = 0;
-    p + 1;
+    // the potentiometer is a analog device so it doesn't usually
+    // create interrupts
 }

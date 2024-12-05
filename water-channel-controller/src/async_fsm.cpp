@@ -75,7 +75,7 @@ void EventSource::bindInterrupt(int pin){
 
 void EventSource::generateEvent(Event* ev) {
   if (observer != NULL){
-    observer->notifyEvent(ev);  
+    observer->notifyEvent(ev);
   }
 }
 
