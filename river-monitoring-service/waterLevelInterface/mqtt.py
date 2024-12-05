@@ -2,7 +2,7 @@ from django.conf import settings
 import paho.mqtt.client as mqtt
 import json
 
-lastMeasurment = 0
+lastMeasurement = 0
 
 def on_connect(mqtt_client, userdata, flags, rc):
     if rc == 0:
@@ -12,16 +12,16 @@ def on_connect(mqtt_client, userdata, flags, rc):
         print('Bad connection. Code:', rc)
 
 def on_message(mqtt_client, userdata, msg):
-    from .models import Measurment
-    global lastMeasurment
+    from .models import Measurement
+    global lastMeasurement
     try:
         data = json.loads(msg.payload.decode())
         
         if 'value' in data and isinstance(data['value'], (int, float)):
-            lastMeasurment = data['value']
+            lastMeasurement = data['value']
             
-            measurment = Measurment(value=lastMeasurment)
-            measurment.save()
+            measurement = Measurement(value=lastMeasurement)
+            measurement.save()
         else:
             print("ERROR: received non-numeric data")
     except json.JSONDecodeError as e:
