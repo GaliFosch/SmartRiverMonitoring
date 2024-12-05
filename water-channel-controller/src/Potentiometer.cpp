@@ -3,6 +3,7 @@
 
 Potentiometer::Potentiometer(int pin) {
     this->pin = pin;
+    this->bindInterrupt(pin);
 }
 
 int Potentiometer::readValue() {
@@ -27,7 +28,6 @@ int Potentiometer::getValue() {
 }
 
 void Potentiometer::notifyInterrupt(int pin) {
-    // DEBUG: this stays empty until I can figure out how it works
-    int p = 0;
-    p + 1;
+    // the potentiometer is a analog device so it doesn't usually
+    // create interrupts
 }
