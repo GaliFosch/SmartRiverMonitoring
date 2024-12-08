@@ -34,7 +34,9 @@ class ChannelControllerFSM : public AsyncFSM {
       this->lcd->init();
       this->lcd->backlight();
       this->lcd->setCursor(2,1);
-      this->lcd->print("Automatic");
+      this->lcd->print("Automatic:");
+      this->lcd->print(this->servo->getPosition());
+      this->lcd->print("%");
     }
 
     void handleEvent(Event* ev) {

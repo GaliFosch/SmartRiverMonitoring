@@ -48,8 +48,6 @@ void ServoMotor::changePosition(int percent) {
 }
 
 int ServoMotor::getPosition() {
-    Serial.print("POSITION:");
-    Serial.println(position);
     return this->position;
 }
 
