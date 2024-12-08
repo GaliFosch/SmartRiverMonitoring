@@ -3,6 +3,9 @@
 
 ServoMotor::ServoMotor(int pin) {
     this->pin = pin;
+    this->on();
+    this->position = this->servo.read();
+    this->off();
 }
 
 int ServoMotor::fromPercentToAngle(int percent) {
@@ -12,14 +15,13 @@ int ServoMotor::fromPercentToAngle(int percent) {
 void ServoMotor::changePosition(int percent) {
     //float coeff = (2250.0 - 750.0) / 180;
     float angle = this->fromPercentToAngle(percent);
-    float curr = this->getPosition();
     Serial.print("Angle:");
     Serial.println(angle);
-    Serial.print("Curr:");
-    Serial.println(curr);
     //servo.write(750 + angle * coeff);
     //this->servo.write(this->fromPercentToAngle(percent));
     this->on();
+
+    // TODO: decidere cosa fare... Così funziona meglio
     servo.write(angle);
     delay(500);
     // if(angle > curr){
@@ -37,10 +39,12 @@ void ServoMotor::changePosition(int percent) {
     //     }
     // }
     this->off();
+
+    this->position = percent;
 }
 
 int ServoMotor::getPosition() {
-    return this->servo.read();
+    return this->position;
 }
 
 void ServoMotor::on()

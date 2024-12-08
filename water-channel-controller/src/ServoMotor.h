@@ -13,6 +13,7 @@ class ServoMotor {
         void on();
         void off();
         int pin;
+        int position;
         Servo servo;
 };
 
