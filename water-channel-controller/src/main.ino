@@ -34,9 +34,7 @@ class ChannelControllerFSM : public AsyncFSM {
       this->lcd->init();
       this->lcd->backlight();
       this->lcd->setCursor(2,1);
-      this->lcd->print("Automatic: ");
-      this->lcd->print(this->servo->getPosition());
-      this->lcd->print("%");
+      this->lcd->print("Automatic");
     }
 
     void handleEvent(Event* ev) {
@@ -77,8 +75,7 @@ class ChannelControllerFSM : public AsyncFSM {
           {
           this->lcd->clear();
           this->lcd->setCursor(2,1);
-          this->lcd->print("Automatic: ");
-          this->lcd->print(this->servo->getPosition());
+          this->lcd->print("Automatic");
           this->console->log("DEBUG: State change MAN->AUT");
           this->currState = AUTOMATIC;
           }
@@ -87,10 +84,6 @@ class ChannelControllerFSM : public AsyncFSM {
           {
           int servoPos = this->pot->getValue();
           this->servo->changePosition(servoPos);
-          this->lcd->clear();
-          this->lcd->setCursor(2,1);
-          this->lcd->print("Manual: ");
-          this->lcd->print(this->servo->getPosition());
           break;
           }
         case POS_RECEIVED_EVENT:
@@ -113,8 +106,7 @@ class ChannelControllerFSM : public AsyncFSM {
           {
           this->lcd->clear();
           this->lcd->setCursor(2,1);
-          this->lcd->print("Manual: ");
-          this->lcd->print(this->servo->getPosition());
+          this->lcd->print("Manual");
           this->console->log("DEBUG: State change AUT->MAN");
           this->currState = MANUAL;
           break;
