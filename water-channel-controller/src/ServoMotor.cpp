@@ -4,19 +4,23 @@
 ServoMotor::ServoMotor(int pin) {
     this->pin = pin;
     this->on();
-    this->position = this->servo.read();
-    this->off();
+    this->servo.write(90);
+    delay(500);
+    this->position = this->fromAngleToPercent(90);
+    this->off(); 
 }
 
 int ServoMotor::fromPercentToAngle(int percent) {
     return map(percent, 0, 100, 0, 180);
 }
 
+int ServoMotor::fromAngleToPercent(int angle) {
+    return map(angle, 0, 180, 0, 100);
+}
+
 void ServoMotor::changePosition(int percent) {
     //float coeff = (2250.0 - 750.0) / 180;
     float angle = this->fromPercentToAngle(percent);
-    Serial.print("Angle:");
-    Serial.println(angle);
     //servo.write(750 + angle * coeff);
     //this->servo.write(this->fromPercentToAngle(percent));
     this->on();
@@ -44,6 +48,8 @@ void ServoMotor::changePosition(int percent) {
 }
 
 int ServoMotor::getPosition() {
+    Serial.print("POSITION:");
+    Serial.println(position);
     return this->position;
 }
 
