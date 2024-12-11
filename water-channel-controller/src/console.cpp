@@ -6,8 +6,10 @@
 // GIU: Or, it could both receive events (comms from dashboard) and dispatch them (state changes)
 
 Console::Console(){
-  Serial.begin(9600);
-  while (!Serial) {}
+  if(!Serial){
+    Serial.begin(9600);
+    while (!Serial) {}
+  }
 }
 
 void Console::log(const char* msg){

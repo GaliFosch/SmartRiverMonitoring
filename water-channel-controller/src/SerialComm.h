@@ -5,11 +5,14 @@
 #include "Events.h"
 #include "Arduino.h"
 
+#define SERIAL_POLL_PERIOD 1000
+
 class SerialComm : public EventSource {
     public:
         SerialComm();
         void notifyInterrupt(int pin);
         void serialCheck();
+        void notifyUpdate(int state, int openingValue);
     private:
         int readSerial();
 };

@@ -20,13 +20,19 @@ enum State {
 
 class ChannelControllerFSM : public AsyncFSM {
   public:
-    ChannelControllerFSM (ButtonImpl* button, Console* console, ServoMotor* servo,
-                          LiquidCrystal_I2C* lcd, Potentiometer* pot) {
+    ChannelControllerFSM (ButtonImpl* button, 
+        Console* console, 
+        ServoMotor* servo,
+        LiquidCrystal_I2C* lcd, 
+        Potentiometer* pot,
+        SerialComm* serialcomm
+      ) {
       this->button = button;
       this->console = console;
       this->servo = servo;
       this->lcd = lcd;
       this->pot = pot;
+      this->serialComm = serialComm;
       this->currState = AUTOMATIC;
 
       this->button->registerObserver(this);
@@ -68,6 +74,7 @@ class ChannelControllerFSM : public AsyncFSM {
     ServoMotor* servo;
     ButtonImpl* button;
     Console* console;
+    SerialComm* serialComm;
     LiquidCrystal_I2C* lcd;
     Potentiometer* pot;
     State currState;
@@ -147,22 +154,26 @@ class ChannelControllerFSM : public AsyncFSM {
 
 Potentiometer* pot = new Potentiometer(POT_PIN);
 ChannelControllerFSM* fsm;
-long timeLastPotCheck;
+long timeLastCheck;
 ServoMotor* servo;
+SerialComm* serialComm;
 void setup() {
   ButtonImpl* button = new ButtonImpl(BUTTON_PIN);
   Console* console = new Console();
   ServoMotor* servo = new ServoMotor(SERVO_PIN);
   LiquidCrystal_I2C* lcd = new LiquidCrystal_I2C(0x27,20,4);
-  fsm = new ChannelControllerFSM(button, console, servo, lcd, pot);
+  fsm = new ChannelControllerFSM(button, console, servo, lcd, pot, serialComm);
   
-  timeLastPotCheck = millis();
+  timeLastCheck = millis();
 }
 
 void loop() {
-  if ((fsm->getCurrentState()==MANUAL)&&(millis() - timeLastPotCheck > POLL_PERIOD)) {
-    timeLastPotCheck = millis();
-    pot->notifyEvent();
+  if ((millis() - timeLastCheck > POLL_PERIOD)) {
+    timeLastCheck = millis();
+    if(fsm->getCurrentState()==MANUAL)
+      pot->notifyEvent();
+    else
+      serialComm->serialCheck();
   }
   fsm->checkEvents();
 }
