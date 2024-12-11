@@ -6,6 +6,7 @@
 #include <LiquidCrystal_I2C.h>
 #include <Potentiometer.h>
 #include "TimerOne.h"
+#include "SerialComm.h"
 
 #define BUTTON_PIN 3
 #define POT_PIN A1
@@ -97,13 +98,13 @@ class ChannelControllerFSM : public AsyncFSM {
           break;
           }
         case POS_RECEIVED_EVENT:
-          {
-          this->lcd->clear();
-          this->lcd->setCursor(2,1);
-          this->lcd->print("Manual");
-          this->currState = DASHBOARD;
-          break;
-          }
+          // {
+          // this->lcd->clear();
+          // this->lcd->setCursor(2,1);
+          // this->lcd->print("Manual");
+          // this->currState = DASHBOARD;
+          // break;
+          // }
         default:
           this->console->log("DEBUG: Default case reached in ChannelControllerFSM::handleManual");
           break;
@@ -122,6 +123,16 @@ class ChannelControllerFSM : public AsyncFSM {
           this->console->log("DEBUG: State change AUT->MAN");
           this->currState = MANUAL;
           break;
+          }
+        case POS_RECEIVED_EVENT:
+          {
+          SerialEvent* serialEvent = (SerialEvent*) ev;
+          this->servo->changePosition(serialEvent->getValue());
+          this->lcd->clear();
+          this->lcd->setCursor(2,1);
+          this->lcd->print("Automatic: ");
+          this->lcd->print(this->servo->getPosition());
+          this->lcd->print("%");
           }
         default:
           this->console->log("DEBUG: Default case reached in ChannelControllerFSM::handleAutomatic");
