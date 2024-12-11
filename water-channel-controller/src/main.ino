@@ -12,6 +12,8 @@
 #define POT_PIN A1
 #define SERVO_PIN 10
 
+#define POLL_PERIOD 500
+
 enum State {
   AUTOMATIC,
   MANUAL,
@@ -83,35 +85,18 @@ class ChannelControllerFSM : public AsyncFSM {
       switch (ev->getType()) {
         case BUTTON_PRESSED_EVENT:
           {
-          this->lcd->clear();
-          this->lcd->setCursor(2,1);
-          this->lcd->print("Automatic: ");
-          this->lcd->print(this->servo->getPosition());
-          this->lcd->print("%");
-          this->console->log("DEBUG: State change MAN->AUT");
           this->currState = AUTOMATIC;
+          this->changeGatePosition(this->servo->getPosition());
+          this->console->log("DEBUG: State change MAN->AUT");
           }
           break;
         case POT_CHECK_EVENT:
           {
           int servoPos = this->pot->getValue();
-          this->servo->changePosition(servoPos);
-          this->lcd->clear();
-          this->lcd->setCursor(2,1);
-          this->lcd->print("Manual: ");
-          this->lcd->print(this->servo->getPosition());
-          this->lcd->print("%");
+          this->changeGatePosition(servoPos);
           delay(50);
           break;
           }
-        case POS_RECEIVED_EVENT:
-          // {
-          // this->lcd->clear();
-          // this->lcd->setCursor(2,1);
-          // this->lcd->print("Manual");
-          // this->currState = DASHBOARD;
-          // break;
-          // }
         default:
           this->console->log("DEBUG: Default case reached in ChannelControllerFSM::handleManual");
           break;
@@ -122,24 +107,15 @@ class ChannelControllerFSM : public AsyncFSM {
       switch (ev->getType()) {
         case BUTTON_PRESSED_EVENT:
           {
-          this->lcd->clear();
-          this->lcd->setCursor(2,1);
-          this->lcd->print("Manual: ");
-          this->lcd->print(this->servo->getPosition());
-          this->lcd->print("%");
-          this->console->log("DEBUG: State change AUT->MAN");
           this->currState = MANUAL;
+          this->changeGatePosition(this->pot->getValue());
+          this->console->log("DEBUG: State change AUT->MAN");
           break;
           }
         case POS_RECEIVED_EVENT:
           {
-          SerialEvent* serialEvent = (SerialEvent*) ev;
-          this->servo->changePosition(serialEvent->getValue());
-          this->lcd->clear();
-          this->lcd->setCursor(2,1);
-          this->lcd->print("Automatic: ");
-          this->lcd->print(this->servo->getPosition());
-          this->lcd->print("%");
+          int servoPos = this->pot->getValue();
+          this->changeGatePosition(servoPos);
           }
         default:
           this->console->log("DEBUG: Default case reached in ChannelControllerFSM::handleAutomatic");
@@ -149,6 +125,18 @@ class ChannelControllerFSM : public AsyncFSM {
 
     void handleDashboard(Event *ev) {
 
+    }
+
+    void changeGatePosition(int value){
+      this->servo->changePosition(value);
+      this->lcd->clear();
+      this->lcd->setCursor(2,1);
+      if(this->currState == AUTOMATIC)
+        this->lcd->print("Automatic: ");
+      else
+        this->lcd->print("Manual: ");
+      this->lcd->print(this->servo->getPosition());
+      this->lcd->print("%");
     }
 };
 

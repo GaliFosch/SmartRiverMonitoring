@@ -4,8 +4,6 @@
 #include "async_fsm.h"
 #include "Events.h"
 
-#define POLL_PERIOD 500
-
 class Potentiometer : public EventSource{
     public:
         Potentiometer(int pin);

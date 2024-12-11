@@ -15,9 +15,18 @@ void SerialComm::notifyInterrupt(int pin)
 void SerialComm::serialCheck()
 {
     int value = readSerial();
-    if(value<0) return;
+    if(value<0 || value>100) return;
+    lastValue = value;
+    generateEvent(new SerialEvent());
+}
 
-    generateEvent(new SerialEvent(value));
+int SerialComm::getLastValue()
+{
+    return this->lastValue;
+}
+
+void SerialComm::notifyUpdate(int state, int openingValue)
+{
 }
 
 int SerialComm::readSerial()
@@ -26,13 +35,4 @@ int SerialComm::readSerial()
     String line = Serial.readString();
     int value = line.toInt();
     return value;
-}
-
-SerialEvent::SerialEvent(int value): Event(POS_RECEIVED_EVENT), value(value)
-{
-}
-
-int SerialEvent::getValue()
-{
-    return this->value;
 }
