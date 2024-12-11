@@ -94,7 +94,6 @@ class ChannelControllerFSM : public AsyncFSM {
           {
           int servoPos = this->pot->getValue();
           this->changeGatePosition(servoPos);
-          delay(50);
           break;
           }
         default:
@@ -137,6 +136,8 @@ class ChannelControllerFSM : public AsyncFSM {
         this->lcd->print("Manual: ");
       this->lcd->print(this->servo->getPosition());
       this->lcd->print("%");
+      delay(50);
+      this->serialComm->notifyUpdate(this->currState, this->servo->getPosition());
     }
 };
 
