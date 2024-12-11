@@ -11,12 +11,12 @@ class SerialComm : public EventSource {
         void notifyInterrupt(int pin);
         void serialCheck();
     private:
-        int readSerial(char* out_type, int* out_value);
+        int readSerial();
 };
 
 class SerialEvent : public Event {
     public:
-        SerialEvent(int type, int value);
+        SerialEvent(int value);
         int getValue();
     private:
         int value;
