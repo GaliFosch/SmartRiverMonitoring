@@ -18,6 +18,8 @@ class SerialEvent : public Event {
     public:
         SerialEvent(int type, int value);
         int getValue();
+    private:
+        int value;
 };
 
 #endif

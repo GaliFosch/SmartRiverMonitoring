@@ -46,6 +46,11 @@ int SerialComm::readSerial(char* out_type, int* out_value)
     return 0;
 }
 
-SerialEvent::SerialEvent(int type, int value): Event(type)
+SerialEvent::SerialEvent(int type, int value): Event(type), value(value)
 {
+}
+
+int SerialEvent::getValue()
+{
+    return this->value;
 }
