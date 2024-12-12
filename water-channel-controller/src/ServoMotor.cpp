@@ -6,8 +6,8 @@ ServoMotor::ServoMotor(int pin) {
     this->on();
     this->servo.write(90);
     delay(500);
-    this->position = this->fromAngleToPercent(90);
     this->off(); 
+    this->position = this->fromAngleToPercent(90);
 }
 
 int ServoMotor::fromPercentToAngle(int percent) {

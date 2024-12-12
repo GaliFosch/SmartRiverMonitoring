@@ -27,7 +27,7 @@ class ChannelControllerFSM : public AsyncFSM {
         ServoMotor* servo,
         LiquidCrystal_I2C* lcd, 
         Potentiometer* pot,
-        SerialComm* serialcomm
+        SerialComm* serialComm
       ) {
       this->button = button;
       this->console = console;
@@ -39,13 +39,11 @@ class ChannelControllerFSM : public AsyncFSM {
 
       this->button->registerObserver(this);
       this->pot->registerObserver(this);
+      this->serialComm->registerObserver(this);
 
       this->lcd->init();
       this->lcd->backlight();
-      this->lcd->setCursor(2,1);
-      this->lcd->print("Automatic:");
-      this->lcd->print(this->servo->getPosition());
-      this->lcd->print("%");
+      this->changeGatePosition(this->servo->getPosition());
     }
 
     void handleEvent(Event* ev) {
@@ -107,7 +105,7 @@ class ChannelControllerFSM : public AsyncFSM {
         case BUTTON_PRESSED_EVENT:
           {
           this->currState = MANUAL;
-          this->changeGatePosition(this->pot->getValue());
+          //this->changeGatePosition(this->pot->readValue());
           this->console->log("DEBUG: State change AUT->MAN");
           break;
           }
@@ -151,9 +149,10 @@ void setup() {
   Console* console = new Console();
   ServoMotor* servo = new ServoMotor(SERVO_PIN);
   LiquidCrystal_I2C* lcd = new LiquidCrystal_I2C(0x27,20,4);
+  SerialComm* serialComm = new SerialComm();
   fsm = new ChannelControllerFSM(button, console, servo, lcd, pot, serialComm);
-  
   timeLastCheck = millis();
+  console->log("FINE SETUP");
 }
 
 void loop() {
