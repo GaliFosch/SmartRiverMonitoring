@@ -13,14 +13,14 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 
 # WaterLevels
-WL1 = 1
-WL2 = 2
-WL3 = 3
-WL4 = 4
+WL1 = 1.3
+WL2 = 1
+WL3 = 0.6
+WL4 = 0.4
 
 # Frequencies
-F1 = 1
-F2 = 2
+F1 = 5000
+F2 = 7000
 
 # MQTT broker settings
 MQTT_SERVER = 'test.mosquitto.org'

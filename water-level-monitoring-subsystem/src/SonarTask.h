@@ -7,6 +7,7 @@
 #define F1 1000;
 #define F2 500;
 
+
 class SonarTask : public Task {
     public:
         SonarTask(int trigPin, int echoPin);

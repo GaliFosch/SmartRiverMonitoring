@@ -16,14 +16,14 @@ def on_message(mqtt_client, userdata, msg):
     global lastMeasurement
     try:
         data = json.loads(msg.payload.decode())
-        
-        if 'value' in data and isinstance(data['value'], (int, float)):
-            lastMeasurement = data['value']
-            
-            measurement = Measurement(value=lastMeasurement)
-            measurement.save()
-        else:
-            print("ERROR: received non-numeric data")
+        if data[0] == "VALUE":
+            if 'value' in data[1] and isinstance(data[1]["value"], float):
+                lastMeasurement = data[1]['value']
+                
+                measurement = Measurement(value=lastMeasurement)
+                measurement.save()
+            else:
+                print("ERROR: received non-numeric data")
     except json.JSONDecodeError as e:
         print("ERROR: JSON decoding failed:", e)
     except Exception as e:
@@ -40,4 +40,5 @@ client.connect(
 )
 
 def signalFrequenceChange(frequency):
-    return client.publish("RMS/waterlevel/frequency", str(frequency))
+    return client.publish("RMS/waterlevel/frequency", 
+                          "[ \"FREQ\"," + str(frequency) + "]")
