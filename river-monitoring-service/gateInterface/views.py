@@ -3,7 +3,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render
 
-from serialComm import serial_read, serial_send
+from .serialComm import serial_read, serial_send
 
 def setOpeningValue(request):
     rc = 400
