@@ -9,7 +9,7 @@ def setOpeningValue(request):
     rc = 400
     if request.method == "GET":
         value = request.GET.get('value', '')
-        serial_send(settings.SERIAL_PORT, settings.BAUDRATE, f"set:{value}")
+        serial_send(settings.SERIAL_PORT, settings.BAUDRATE, f"{value}")
         rc = 200
     return JsonResponse({'errorCode': rc})
 
