@@ -136,7 +136,7 @@ class ChannelControllerFSM : public AsyncFSM {
       this->lcd->print(this->servo->getPosition());
       this->lcd->print("%");
       delay(50);
-      this->serialComm->notifyUpdate(this->currState, this->servo->getPosition());
+      this->serialComm->notifyUpdate(this->servo->getPosition());
     }
 };
 

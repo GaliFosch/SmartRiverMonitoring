@@ -45,6 +45,7 @@ int SerialComm::getLastValue()
 
 void SerialComm::notifyUpdate(int openingValue)
 {
+  Serial.println(openingValue);
 }
 
 int SerialComm::readSerial()
