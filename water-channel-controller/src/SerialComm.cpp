@@ -43,7 +43,7 @@ int SerialComm::getLastValue()
     return this->lastValue;
 }
 
-void SerialComm::notifyUpdate(int state, int openingValue)
+void SerialComm::notifyUpdate(int openingValue)
 {
 }
 

@@ -11,7 +11,7 @@ class SerialComm : public EventSource {
         void notifyInterrupt(int pin);
         void serialCheck();
         int getLastValue();
-        void notifyUpdate(int state, int openingValue);
+        void notifyUpdate(int openingValue);
     private:
         int readSerial();
 
