@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
+    path("gti/", include("gateInterface.urls")),
     path("wtli/", include("waterLevelInterface.urls")),
     path("wtld/", include("riverMonitoringDashboard.urls")),
     path("admin/", admin.site.urls),
