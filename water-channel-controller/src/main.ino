@@ -105,14 +105,15 @@ class ChannelControllerFSM : public AsyncFSM {
         case BUTTON_PRESSED_EVENT:
           {
           this->currState = MANUAL;
-          //this->changeGatePosition(this->pot->readValue());
           this->console->log("DEBUG: State change AUT->MAN");
           break;
           }
         case POS_RECEIVED_EVENT:
           {
-          int servoPos = this->pot->getValue();
-          this->changeGatePosition(servoPos);
+          this->console->log("received position");
+          // int pos = this->serialComm->getLastValue();
+          // this->changeGatePosition(pos);
+          break;
           }
         default:
           this->console->log("DEBUG: Default case reached in ChannelControllerFSM::handleAutomatic");

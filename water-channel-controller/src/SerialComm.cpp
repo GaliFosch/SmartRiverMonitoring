@@ -58,8 +58,7 @@ int SerialComm::readSerial()
     if(isInteger(line)){
         int value = line.toInt();
         return value;
-    }else{
-        return -1;
     }
+        return -1;
 }
 

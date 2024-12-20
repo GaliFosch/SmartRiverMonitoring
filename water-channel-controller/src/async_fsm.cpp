@@ -74,7 +74,9 @@ void EventSource::bindInterrupt(int pin){
 }
 
 void EventSource::generateEvent(Event* ev) {
-  if (observer != NULL){
+  if (observer != NULL && ev != NULL){
+    Serial.println("event added");
+    delay(100);
     observer->notifyEvent(ev);
   }
 }
@@ -94,8 +96,12 @@ bool EventQueue::isEmpty() {
 }
 
 void EventQueue::enqueue(Event* ev){
+  Serial.println("event fsdfsdf");
+    delay(100);
   queue[tail] = ev;
   tail = (tail+1) % MAX_EVQUEUE_SIZE;
+  
+    
 }
 
 Event* EventQueue::dequeue(){
@@ -113,7 +119,9 @@ Event* EventQueue::dequeue(){
 AsyncFSM::AsyncFSM(){}
     
 void AsyncFSM::notifyEvent(Event* ev){
+    Serial.println("event enqueued");
   eventQueue.enqueue(ev);
+  
 }
 
 void AsyncFSM::checkEvents(){
@@ -122,6 +130,7 @@ void AsyncFSM::checkEvents(){
     interrupts();
 
     if (!isEmpty){
+      Serial.println("EVENT PRESENT");
       noInterrupts();
       Event* ev = eventQueue.dequeue();
       interrupts();
