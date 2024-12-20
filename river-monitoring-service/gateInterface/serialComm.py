@@ -25,3 +25,4 @@ def serial_read(port, baudrate):
         return response
     except Exception as e:
         print(f"Failed to send message: {e}")
+        return -1
