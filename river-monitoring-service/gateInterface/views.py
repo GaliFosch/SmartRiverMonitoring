@@ -13,27 +13,21 @@ def setOpeningValue(request):
         rc = 200
     return JsonResponse({'errorCode': rc})
 
-def readUpdateMsg(request):
+def readOpVal(request):
     error = 1
-    state = ""
     openingValue = 0
 
     message = serial_read()
     if message != -1:
         try:
-            data = json.loads(message)
-            if "state" in data and "opVal" in data:
-                state = data["state"]
-                openingValue = data["opVal"]
-                error = 0
-        except json.JSONDecodeError:
-            print("JSONDecodeError")
-
-   
+            openingValue = int(message)
+            error = 0
+        except ValueError:
+            print("non int number")
+    
     return JsonResponse(
         {
             'errorCode': error,
-            'state': state,
             'opVal': openingValue
         }
     )
