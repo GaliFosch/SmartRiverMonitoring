@@ -6,7 +6,7 @@ class Sonar {
         Sonar(int trigPin, int echoPin);
         float readValue();
     private:
-        const float temperature = 20;
+        const float temperature = 20.0;
         const float vs = 331.45 + 0.62 * temperature;
         int trigPin;
         int echoPin;

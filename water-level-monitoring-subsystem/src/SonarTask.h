@@ -7,6 +7,7 @@
 #define F1 1000;
 #define F2 500;
 
+
 class SonarTask : public Task {
     public:
         SonarTask(int trigPin, int echoPin);
@@ -14,7 +15,10 @@ class SonarTask : public Task {
         void tick();
     private:
         Sonar* sonar;
-        const char* mqtt_server = "broker.mqtt-dashboard.com";
+        // test.mosquitto.org
+        // mqtt.eclipse.org
+        // broker.mqtt-dashboard.coms
+        const char* mqtt_server = "test.mosquitto.org";
         const char* topic = "SRM/waterlevel";
         void sendMessage();
         void reconnect();

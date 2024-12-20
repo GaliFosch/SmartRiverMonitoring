@@ -12,7 +12,12 @@ SonarTask::SonarTask(int trigPin, int echoPin) {
 
 // TODO: remove
 void callback(char* topic, byte* payload, unsigned int length) {
-  Serial.println(String("Message arrived on [") + topic + "] len: " + length );
+    // Serial.println(String("Message arrived on [") + topic + "]" +  );
+    String payloadStr = "";
+    for (unsigned int i = 0; i < length; i++) {
+        payloadStr += (char) payload[i];
+    }
+    Serial.println(payloadStr);
 }
 
 void SonarTask::init(int period) {
@@ -33,7 +38,9 @@ void SonarTask::tick() {
 }
 
 void SonarTask::sendMessage() {
-    client.publish(topic, "16");
+    float value = this->sonar->readValue();
+    String payload = "[ \"VALUE\", {\"value\": " + String(value, 2) + "}]";
+    client.publish(topic, payload.c_str());
 }
 
 void SonarTask::reconnect() {
@@ -42,6 +49,9 @@ void SonarTask::reconnect() {
     if (client.connect(clientId.c_str())) {
         Serial.println("DEBUG: mqtt connection started");
         client.subscribe(topic);
-    }
+    } else {
+        Serial.print("MQTT connection failed, rc=");
+        Serial.println(client.state());
+}
 }
 

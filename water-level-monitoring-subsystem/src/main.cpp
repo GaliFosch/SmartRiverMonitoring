@@ -19,7 +19,7 @@ void setup() {
   stateTask->init(200);
 
   SonarTask *sonarTask = new SonarTask(TRIG, ECHO);
-  sonarTask->init(1000);
+  sonarTask->init(10000);
 
   sched.addTask(stateTask);
   sched.addTask(sonarTask);
