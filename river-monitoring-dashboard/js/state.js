@@ -1,14 +1,19 @@
 document.addEventListener("DOMContentLoaded", ()=>{
     const stateIndex = "";
-    const field = document.getElementById("state");
+    const stateField = document.getElementById("state");
     function checkState(){
-        fetch(stateIndex)
-            .then(response => response.text)
-            .then(text=>{
-                if(field!=null){
-                    field.innerText = text;
+        let xhttp = new XMLHttpRequest()
+        xhttp.onload = function () {
+            let response = JSON.parse(xhttp.responseText)
+            console.log(response)
+            if (response && response.length > 0){
+                if(response["error"] === 0){
+                    stateField.innerText = response["state"]
                 }
-            });
+            }
+        }
+        xhttp.open("GET", stateIndex, true)
+        xhttp.send()
     }
-    setInterval(checkState,5000);
+    setInterval(checkState,1000);
 })

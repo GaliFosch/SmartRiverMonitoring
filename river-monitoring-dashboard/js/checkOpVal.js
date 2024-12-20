@@ -15,5 +15,5 @@ document.addEventListener("DOMContentLoaded", ()=>{
         xhttp.open("GET", opValIndex, true)
         xhttp.send()
     }
-    setInterval(checkUpdate,5000);
+    setInterval(checkUpdate,1000);
 })
