@@ -1,9 +1,10 @@
 import json
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
 from waterLevelInterface.models import Measurement
 import sqlite3
 import datetime
+from riverMonitoringSystem.mainLoop import state
 
 def get_data(request):
     timeNow = datetime.datetime.now(tz=timezone.utc).replace(microsecond=0)
@@ -30,3 +31,9 @@ def get_data(request):
     response = HttpResponse(json.dumps(json_obj), content_type="application/json")
     return response
     
+def get_state(request):
+    global state
+    return JsonResponse({
+        "errorCode": 0,
+        "state": state 
+        }, safe=False)

@@ -13,9 +13,11 @@ class States(Enum):
     ALARM_TOO_HIGH = "ALARM-TOO-HIGH"
     ALARM_TOO_HIGH_CRITIC = "ALARM-TOO-HIGH-CRITIC"
 
+state = States.NORMAL
+
 def loop():
     global lastMeasurement
-    state = States.NORMAL
+    global state
     stateChange = True
     while True:
         if state == States.NORMAL:
