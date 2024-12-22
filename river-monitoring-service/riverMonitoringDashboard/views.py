@@ -4,7 +4,7 @@ from django.utils import timezone
 from waterLevelInterface.models import Measurement
 import sqlite3
 import datetime
-from riverMonitoringSystem.mainLoop import state
+from riverMonitoringSystem.mainLoop import getState
 
 def get_data(request):
     timeNow = datetime.datetime.now(tz=timezone.utc).replace(microsecond=0)
@@ -32,8 +32,7 @@ def get_data(request):
     return response
     
 def get_state(request):
-    global state
     return JsonResponse({
         "errorCode": 0,
-        "state": state 
+        "state": getState()
         }, safe=False)

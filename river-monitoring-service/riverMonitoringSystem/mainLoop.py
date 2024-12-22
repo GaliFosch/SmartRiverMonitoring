@@ -15,6 +15,10 @@ class States(Enum):
 
 state = States.NORMAL
 
+def getState():
+    global state
+    return state
+
 def loop():
     global state
     stateChange = True
