@@ -2,7 +2,14 @@ from django.conf import settings
 import paho.mqtt.client as mqtt
 import json
 
-lastMeasurement = 0
+lastMeasurement = -10000
+
+def getLastMeasurment():
+    global lastMeasurement
+    if(lastMeasurement <= -10000):
+        from .models import Measurement
+        lastMeasurement = Measurement.objects.latest("timestamp").value
+    return lastMeasurement
 
 def on_connect(mqtt_client, userdata, flags, rc):
     if rc == 0:
@@ -14,11 +21,14 @@ def on_connect(mqtt_client, userdata, flags, rc):
 def on_message(mqtt_client, userdata, msg):
     from .models import Measurement
     global lastMeasurement
+    print("PRevLastMeasure:",lastMeasurement)
     try:
         data = json.loads(msg.payload.decode())
         if data[0] == "VALUE":
             if 'value' in data[1] and isinstance(data[1]["value"], float):
+                print("value:", data[1]["value"])
                 lastMeasurement = data[1]['value']
+                print("lastMeasure:",lastMeasurement)
                 
                 measurement = Measurement(value=lastMeasurement)
                 measurement.save()

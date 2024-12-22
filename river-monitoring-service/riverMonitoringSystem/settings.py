@@ -23,7 +23,7 @@ F1 = 5000
 F2 = 7000
 
 # MQTT broker settings
-MQTT_SERVER = 'test.mosquitto.org'
+MQTT_SERVER = 'localhost'
 MQTT_PORT = 1883
 MQTT_KEEPALIVE = 60
 MQTT_USER = ''

@@ -3,7 +3,7 @@ import time
 from enum import Enum, unique
 from django.conf import settings
 from waterLevelInterface.mqtt import signalFrequenceChange
-from waterLevelInterface.mqtt import lastMeasurement
+from waterLevelInterface.mqtt import getLastMeasurment
 
 @unique
 class States(Enum):
@@ -16,59 +16,65 @@ class States(Enum):
 state = States.NORMAL
 
 def loop():
-    global lastMeasurement
     global state
     stateChange = True
+    time.sleep(3)
     while True:
+        print(getLastMeasurment())
         if state == States.NORMAL:
+            print("Normal")
             if stateChange:
                 stateChange = False
                 signalFrequenceChange(settings.F1)
                 #Set opening of the gate to 25%
-            if lastMeasurement < settings.WL1:
+            if getLastMeasurment() < settings.WL1:
                 stateChange = True
                 state = States.ALARM_TOO_LOW
-            if lastMeasurement > settings.WL2:
+            if getLastMeasurment() > settings.WL2:
                 stateChange = True
                 state = States.PRE_ALARM_TOO_HIGH
         elif state == States.ALARM_TOO_LOW:
+            print("Alarm_tooLow")
             if stateChange:
                 stateChange = False
                 signalFrequenceChange(settings.F1)
                 #Set opening of the gate to 0%
-            if lastMeasurement >= settings.WL1:
+            if getLastMeasurment() >= settings.WL1:
                 stateChange = True
                 state = States.NORMAL
         elif state == States.PRE_ALARM_TOO_HIGH:
+            print("pre_alarm_too_high")
             if stateChange:
                 stateChange = False
                 signalFrequenceChange(settings.F2)
-            if lastMeasurement <= settings.WL2:
+            if getLastMeasurment() <= settings.WL2:
                 stateChange = True
                 state = States.NORMAL
-            if lastMeasurement > settings.WL3:
+            if getLastMeasurment() > settings.WL3:
                 stateChange = True
                 state = States.ALARM_TOO_HIGH
         elif state == States.ALARM_TOO_HIGH:
+            print("alarm_too_high")
             if stateChange:
                 stateChange = False
                 signalFrequenceChange(settings.F2)
                 #Set opening of the gate to 50%
-            if lastMeasurement <= settings.WL3:
+            if getLastMeasurment() <= settings.WL3:
                 stateChange = True
                 state = States.PRE_ALARM_TOO_HIGH
-            if lastMeasurement > settings.WL4:
+            if getLastMeasurment() > settings.WL4:
                 stateChange = True
                 state = States.ALARM_TOO_HIGH_CRITIC
         elif state == States.ALARM_TOO_HIGH_CRITIC:
+            print("alarm_too_high_crit")
             if stateChange:
                 stateChange = False
                 signalFrequenceChange(settings.F2)
                 #Set opening of the gate to 100%
-            if lastMeasurement <= settings.WL4:
+            if getLastMeasurment() <= settings.WL4:
                 stateChange = True
                 state = States.ALARM_TOO_HIGH
-        time.sleep(0.2)
+        time.sleep(1)
 
 def startMainLoop():
     thread = threading.Thread(target = loop)
