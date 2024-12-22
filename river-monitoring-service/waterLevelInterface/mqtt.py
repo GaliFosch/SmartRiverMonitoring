@@ -21,14 +21,11 @@ def on_connect(mqtt_client, userdata, flags, rc):
 def on_message(mqtt_client, userdata, msg):
     from .models import Measurement
     global lastMeasurement
-    print("PRevLastMeasure:",lastMeasurement)
     try:
         data = json.loads(msg.payload.decode())
         if data[0] == "VALUE":
             if 'value' in data[1] and isinstance(data[1]["value"], float):
-                print("value:", data[1]["value"])
                 lastMeasurement = data[1]['value']
-                print("lastMeasure:",lastMeasurement)
                 
                 measurement = Measurement(value=lastMeasurement)
                 measurement.save()
@@ -50,5 +47,5 @@ client.connect(
 )
 
 def signalFrequenceChange(frequency):
-    return client.publish("RMS/waterlevel/frequency", 
-                          "[ \"FREQ\"," + str(frequency) + "]")
+    result = client.publish("SRM/waterlevel", "[ \"FREQ\"," + str(frequency) + "]")
+    result.wait_for_publish()
