@@ -70,7 +70,7 @@ def loop():
                 state = States.ALARM_TOO_HIGH
         time.sleep(0.2)
 
-def StartMainLoop():
+def startMainLoop():
     thread = threading.Thread(target = loop)
     thread.start()
     return thread
