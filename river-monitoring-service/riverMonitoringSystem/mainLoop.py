@@ -24,8 +24,8 @@ def loop():
     stateChange = True
     time.sleep(3)
     while True:
-        # print(measurement)
         measurement = getLastMeasurment()
+        print(measurement)
         if state == States.NORMAL:
             if stateChange:
                 stateChange = False
@@ -42,7 +42,6 @@ def loop():
             if stateChange:
                 stateChange = False
                 print("Alarm_tooLow")
-                signalFrequenceChange(settings.F1)
                 #Set opening of the gate to 0%
             if measurement >= settings.WL1:
                 stateChange = True
@@ -62,7 +61,6 @@ def loop():
             if stateChange:
                 stateChange = False
                 print("alarm_too_high")
-                signalFrequenceChange(settings.F2)
                 #Set opening of the gate to 50%
             if measurement <= settings.WL3:
                 stateChange = True
@@ -74,7 +72,6 @@ def loop():
             if stateChange:
                 stateChange = False
                 print("alarm_too_high_crit")
-                signalFrequenceChange(settings.F2)
                 #Set opening of the gate to 100%
             if measurement <= settings.WL4:
                 stateChange = True
