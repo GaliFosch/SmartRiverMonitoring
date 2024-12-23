@@ -13,9 +13,13 @@ class StateTask : public Task {
         void tick();
     private:
         // Galileo.Cell
-        const char* ssid = "LaSaphiGamer";
-        // WIFI1331
-        const char* password = "scva1852";
+        // Vodafone-A38371406
+        // LaSaphiGamer
+        const char* ssid = "Galileo.Cell";
+        // G: WIFI1331
+        // V: e97CtHJpPXgF4C4P
+        // L: scva1852
+        const char* password = "WIFI1331";
         Led* red;
         Led* green;
         void attemptConnection();
