@@ -10,7 +10,6 @@ SonarTask::SonarTask(int trigPin, int echoPin) {
     this->sonar = new Sonar(trigPin, echoPin);
 }
 
-// TODO: remove
 void callback(char* topic, byte* payload, unsigned int length) {
     // Serial.println(String("Message arrived on [") + topic + "]" +  );
     String payloadStr = "";
@@ -50,6 +49,7 @@ void SonarTask::reconnect() {
         Serial.println("DEBUG: mqtt connection started");
         client.subscribe(topic);
     } else {
+        Serial.print(WiFi.localIP());
         Serial.print("MQTT connection failed, rc=");
         Serial.println(client.state());
 }

@@ -70,7 +70,7 @@ function fetchData() {
     xhttp.setRequestHeader("Content-Type", "application/json")
     xhttp.send()
 }
-setInterval(fetchData, 1000);
+setInterval(fetchData, 3000);
 
 
 function convertToISO(receivedDate) {

@@ -13,10 +13,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 
 # WaterLevels
-WL1 = 1.3
-WL2 = 1
-WL3 = 0.6
-WL4 = 0.4
+WL1 = 0.4
+WL2 = 0.6
+WL3 = 1
+WL4 = 1.3
 
 # Frequencies
 F1 = 5000
