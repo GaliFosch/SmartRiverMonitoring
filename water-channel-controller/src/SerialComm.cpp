@@ -52,7 +52,7 @@ int SerialComm::readSerial()
 {
     if(!Serial.available()) return -1;
     String line = Serial.readString();
-    delay(100);
+    //delay(100);
     if (line.endsWith("\n")) {
         line.remove(line.length() - 1);
     }
