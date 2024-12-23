@@ -37,9 +37,9 @@ class ChannelControllerFSM : public AsyncFSM {
       this->serialComm = serialComm;
       this->currState = AUTOMATIC;
 
+      this->serialComm->registerObserver(this);
       this->button->registerObserver(this);
       this->pot->registerObserver(this);
-      this->serialComm->registerObserver(this);
 
       this->lcd->init();
       this->lcd->backlight();
@@ -101,6 +101,7 @@ class ChannelControllerFSM : public AsyncFSM {
     };
 
     void handleAutomatic(Event *ev) {
+      this->console->log("DEBUG: Evento ricevuto in AUTOMATIC");
       switch (ev->getType()) {
         case BUTTON_PRESSED_EVENT:
           {
@@ -111,8 +112,8 @@ class ChannelControllerFSM : public AsyncFSM {
         case POS_RECEIVED_EVENT:
           {
           this->console->log("received position");
-          // int pos = this->serialComm->getLastValue();
-          // this->changeGatePosition(pos);
+          int pos = this->serialComm->getLastValue();
+          this->changeGatePosition(pos);
           break;
           }
         default:
@@ -143,14 +144,17 @@ class ChannelControllerFSM : public AsyncFSM {
 Potentiometer* pot = new Potentiometer(POT_PIN);
 ChannelControllerFSM* fsm;
 long timeLastCheck;
-ServoMotor* servo;
 SerialComm* serialComm;
+
 void setup() {
+  Serial.begin(9600);
+  while (!Serial){}
+  
   ButtonImpl* button = new ButtonImpl(BUTTON_PIN);
   Console* console = new Console();
   ServoMotor* servo = new ServoMotor(SERVO_PIN);
   LiquidCrystal_I2C* lcd = new LiquidCrystal_I2C(0x27,20,4);
-  SerialComm* serialComm = new SerialComm();
+  serialComm = new SerialComm();
   fsm = new ChannelControllerFSM(button, console, servo, lcd, pot, serialComm);
   timeLastCheck = millis();
   console->log("FINE SETUP");

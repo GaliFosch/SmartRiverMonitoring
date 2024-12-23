@@ -76,11 +76,19 @@ void EventSource::bindInterrupt(int pin){
 void EventSource::generateEvent(Event* ev) {
   if (observer != NULL && ev != NULL){
     observer->notifyEvent(ev);
+    Serial.println("DEBUG: Evento notificato all'osservatore");
+  } else {
+    Serial.println(observer == NULL ? "DEBUG: Osservatore non presente" : "DEBUG: Evento nullo");
   }
 }
 
 void EventSource:: registerObserver(Observer* observer){
-  this->observer = observer;
+  if (observer != NULL) {
+    this->observer = observer;
+    Serial.println("DEBUG: Observer assegnato correttamente");
+  } else {
+    Serial.println("DEBUG: Observer non valido");
+  }
 }
 
 /* ------------------------ EventQueue ------------------------ */
@@ -114,7 +122,6 @@ AsyncFSM::AsyncFSM(){}
     
 void AsyncFSM::notifyEvent(Event* ev){
   eventQueue.enqueue(ev);
-  
 }
 
 void AsyncFSM::checkEvents(){

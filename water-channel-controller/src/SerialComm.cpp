@@ -33,9 +33,11 @@ void SerialComm::notifyInterrupt(int pin)
 void SerialComm::serialCheck()
 {
     int value = readSerial();
-    if(value<0 || value>100) return;
+    if (value < 0 || value > 100) return;
+
     lastValue = value;
-    generateEvent(new SerialEvent());
+    Event* ev = new SerialEvent();
+    generateEvent(ev);
 }
 
 int SerialComm::getLastValue()
@@ -50,16 +52,18 @@ void SerialComm::notifyUpdate(int openingValue)
 
 int SerialComm::readSerial()
 {
-    if(!Serial.available()) return -1;
-    String line = Serial.readString();
-    //delay(100);
-    if (line.endsWith("\n")) {
-        line.remove(line.length() - 1);
-    }
-    if(isInteger(line)){
+    if (!Serial.available()) return -1;
+
+    char buffer[16]; // Buffer per il dato seriale
+    int length = Serial.readBytesUntil('\n', buffer, sizeof(buffer) - 1);
+    buffer[length] = '\0'; // Terminatore stringa
+
+    String line = String(buffer);
+    Serial.println(line);
+    if (isInteger(line)) {
         int value = line.toInt();
         return value;
     }
-        return -1;
+    return -1;
 }
 
