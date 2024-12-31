@@ -23,15 +23,15 @@ F1 = 5000
 F2 = 7000
 
 # MQTT broker settings
-MQTT_SERVER = '192.168.15.134'
+MQTT_SERVER = 'localhost'
 MQTT_PORT = 1883
 MQTT_KEEPALIVE = 60
 MQTT_USER = ''
 MQTT_PASSWORD = ''
 
 #SERIAL settings
-SERIAL_PORT = ''
-SERIAL_BAUDRATE = 115200
+SERIAL_PORT = 'COM17'
+SERIAL_BAUDRATE = 9600
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

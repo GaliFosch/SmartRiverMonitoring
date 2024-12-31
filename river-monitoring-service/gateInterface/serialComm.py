@@ -1,28 +1,79 @@
+from threading import Lock
+import time
 import serial
+from django.conf import settings
 
-def serial_send(port, baudrate, message):
-    try:
-        ser = serial.Serial(port, baudrate, timeout=1)
+class SerialCommunication:
+    def __init__(self, port, baudrate = 9600, timeout = 1):
+        self.port = port
+        self.baudrate = baudrate
+        self.timeout = timeout
+        self.serial = None
+        self.lock = Lock()
 
-        if not message.endswith('\n'):
-            message += '\n'
+    def open(self):
+        with self.lock:
+            try:
+                self.serial = serial.Serial(
+                    port = self.port, 
+                    baudrate = self.baudrate, 
+                    timeout = self.timeout
+                    )
+                time.sleep(2)
+                print(f"Open Connection on port {self.port} with baudrate {self.baudrate}.")
+            except Exception as e:
+                print(f"Error in serial connection: {e}")
+    
+    def close(self):
+        with self.lock:
+            if self.isOpen():
+                self.serial.close()
+                print("Serial Connection closed")
 
-        ser.write(message.encode())
+    def isOpen(self):
+        with self.lock:
+            return self.serial != None and self.serial.is_open
 
-        ser.close()
-        print(f"Message sent: {message.strip()}")
-    except Exception as e:
-        print(f"Failed to send message: {e}")
+    def send(self, message):
+        with self.lock:
+            try:
+                if self.isOpen():
+                    if not message.endswith('\n'):
+                        message += '\n'
 
-def serial_read(port, baudrate):
-    try:
-        ser = serial.Serial(port, baudrate, timeout=1)
+                    self.serial.write(message.encode())
 
-        response = ser.readline().decode('utf-8').strip()
+                    print(f"Message sent: {message.strip()}")
+                else: 
+                    print("Serial connection is closed")
+            except Exception as e:
+                print(f"Failed to send message: {e}")
 
-        ser.close()
-        print(f"Message read: {response}")
-        return response
-    except Exception as e:
-        print(f"Failed to send message: {e}")
-        return -1
+    def read(self):
+        with self.lock:
+            try:
+                if self.isOpen():
+                    response = self.serial.readline().decode('utf-8').strip()
+                    print(f"Message read: {response}")
+                    return response
+                else: 
+                    print("Serial connection is closed")
+                
+            except Exception as e:
+                print(f"Failed to send message: {e}")
+                return None
+            return None
+    
+    def __del__(self):
+        self.close()
+
+
+serialComm = SerialCommunication(settings.SERIAL_PORT, settings.SERIAL_BAUDRATE)
+
+def getSerialComm():
+    global serialComm
+    if not serialComm.isOpen():
+        print("Serial is closed")
+        serialComm.open()
+    print(serialComm.isOpen())
+    return serialComm

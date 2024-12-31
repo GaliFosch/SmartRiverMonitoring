@@ -5,6 +5,8 @@ from django.conf import settings
 from waterLevelInterface.mqtt import signalFrequenceChange
 from waterLevelInterface.mqtt import getLastMeasurment
 
+from gateInterface.serialComm import getSerialComm
+
 @unique
 class States(Enum):
     NORMAL = "NORMAL"
@@ -32,6 +34,7 @@ def loop():
                 print("Normal")
                 signalFrequenceChange(settings.F1)
                 #Set opening of the gate to 25%
+                getSerialComm().send("25")
             if measurement < settings.WL1:
                 stateChange = True
                 state = States.ALARM_TOO_LOW
@@ -43,6 +46,7 @@ def loop():
                 stateChange = False
                 print("Alarm_tooLow")
                 #Set opening of the gate to 0%
+                getSerialComm().send("0")
             if measurement >= settings.WL1:
                 stateChange = True
                 state = States.NORMAL
@@ -62,6 +66,7 @@ def loop():
                 stateChange = False
                 print("alarm_too_high")
                 #Set opening of the gate to 50%
+                getSerialComm().send("50")
             if measurement <= settings.WL3:
                 stateChange = True
                 state = States.PRE_ALARM_TOO_HIGH
@@ -73,6 +78,7 @@ def loop():
                 stateChange = False
                 print("alarm_too_high_crit")
                 #Set opening of the gate to 100%
+                getSerialComm().send("100")
             if measurement <= settings.WL4:
                 stateChange = True
                 state = States.ALARM_TOO_HIGH
