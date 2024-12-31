@@ -12,57 +12,52 @@ class SerialCommunication:
         self.lock = Lock()
 
     def open(self):
-        with self.lock:
-            try:
-                self.serial = serial.Serial(
-                    port = self.port, 
-                    baudrate = self.baudrate, 
-                    timeout = self.timeout
-                    )
-                time.sleep(2)
-                print(f"Open Connection on port {self.port} with baudrate {self.baudrate}.")
-            except Exception as e:
-                print(f"Error in serial connection: {e}")
+        try:
+            self.serial = serial.Serial(
+                port = self.port, 
+                baudrate = self.baudrate, 
+                timeout = self.timeout
+                )
+            time.sleep(2)
+            print(f"Open Connection on port {self.port} with baudrate {self.baudrate}.")
+        except Exception as e:
+            print(f"Error in serial connection: {e}")
     
     def close(self):
-        with self.lock:
-            if self.isOpen():
-                self.serial.close()
-                print("Serial Connection closed")
+        if self.isOpen():
+            self.serial.close()
+            print("Serial Connection closed")
 
     def isOpen(self):
-        with self.lock:
-            return self.serial != None and self.serial.is_open
+        return self.serial != None and self.serial.is_open
 
     def send(self, message):
-        with self.lock:
-            try:
-                if self.isOpen():
-                    if not message.endswith('\n'):
-                        message += '\n'
+        try:
+            if self.isOpen():
+                if not message.endswith('\n'):
+                    message += '\n'
 
-                    self.serial.write(message.encode())
+                self.serial.write(message.encode())
 
-                    print(f"Message sent: {message.strip()}")
-                else: 
-                    print("Serial connection is closed")
-            except Exception as e:
-                print(f"Failed to send message: {e}")
+                print(f"Message sent: {message.strip()}")
+            else: 
+                print("Serial connection is closed")
+        except Exception as e:
+            print(f"Failed to send message: {e}")
 
     def read(self):
-        with self.lock:
-            try:
-                if self.isOpen():
-                    response = self.serial.readline().decode('utf-8').strip()
-                    print(f"Message read: {response}")
-                    return response
-                else: 
-                    print("Serial connection is closed")
-                
-            except Exception as e:
-                print(f"Failed to send message: {e}")
-                return None
+        try:
+            if self.isOpen():
+                response = self.serial.readline().decode('utf-8').strip()
+                print(f"Message read: {response}")
+                return response
+            else: 
+                print("Serial connection is closed")
+            
+        except Exception as e:
+            print(f"Failed to send message: {e}")
             return None
+        return None
     
     def __del__(self):
         self.close()
