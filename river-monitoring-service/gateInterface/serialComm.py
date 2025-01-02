@@ -12,16 +12,25 @@ class SerialCommunication:
         self.lock = Lock()
 
     def open(self):
-        try:
-            self.serial = serial.Serial(
-                port = self.port, 
-                baudrate = self.baudrate, 
-                timeout = self.timeout
-                )
-            time.sleep(2)
-            print(f"Open Connection on port {self.port} with baudrate {self.baudrate}.")
-        except Exception as e:
-            print(f"Error in serial connection: {e}")
+        print(self.serial)
+        if self.serial is None:
+            try:
+                self.serial = serial.Serial(
+                    port = self.port, 
+                    baudrate = self.baudrate, 
+                    timeout = self.timeout
+                    )
+                
+                time.sleep(2)
+                print(f"Open Connection on port {self.port} with baudrate {self.baudrate}.")
+            except Exception as e:
+                print(f"Error in serial connection: {e}")
+        else:
+            try:
+                self.serial.open()
+                print("Serial connection reopened")
+            except Exception as e:
+                print("Error failed to reopen connection:")
     
     def close(self):
         if self.isOpen():
@@ -68,7 +77,23 @@ serialComm = SerialCommunication(settings.SERIAL_PORT, settings.SERIAL_BAUDRATE)
 def getSerialComm():
     global serialComm
     if not serialComm.isOpen():
-        print("Serial is closed")
-        serialComm.open()
-    print(serialComm.isOpen())
-    return serialComm
+        print("Serial is closed, attempting to open...")
+        try:
+            serialComm.open()
+        except serial.SerialException as e:
+            print(f"SerialException while opening the port: {e}")
+        except PermissionError as e:
+            print(f"PermissionError while opening the port: {e}. Retrying...")
+            time.sleep(2)  # Attendi prima di riprovare
+            try:
+                serialComm.open()
+            except Exception as e:
+                print(f"Failed to open the port after retry: {e}")
+                return None  # Restituisci None se non riesci ad aprire la porta
+
+    if serialComm.isOpen():
+        print("Serial port successfully opened.")
+        return serialComm
+    else:
+        print("Failed to open serial port.")
+        return None

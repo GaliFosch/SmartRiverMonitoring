@@ -1,7 +1,6 @@
 import json
 from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
-from waterLevelInterface.models import Measurement
 import sqlite3
 import datetime
 from riverMonitoringSystem.mainLoop import getState

@@ -16,6 +16,8 @@ class States(Enum):
     ALARM_TOO_HIGH_CRITIC = "ALARM-TOO-HIGH-CRITIC"
 
 state = States.NORMAL
+stateChange = True
+gateValueToSend = True
 
 def getState():
     global state
@@ -23,8 +25,9 @@ def getState():
 
 def loop():
     global state
-    stateChange = True
-    time.sleep(3)
+    global stateChange
+    global gateValueToSend
+    time.sleep(5)
     while True:
         measurement = getLastMeasurment()
         print(measurement)
@@ -33,8 +36,12 @@ def loop():
                 stateChange = False
                 print("Normal")
                 signalFrequenceChange(settings.F1)
-                #Set opening of the gate to 25%
-                getSerialComm().send("25")
+            if gateValueToSend:
+                serial = getSerialComm()
+                if serial:
+                    #Set opening of the gate to 25%
+                    serial.send("25")
+                    gateValueToSend = False
             if measurement < settings.WL1:
                 stateChange = True
                 state = States.ALARM_TOO_LOW
@@ -45,8 +52,12 @@ def loop():
             if stateChange:
                 stateChange = False
                 print("Alarm_tooLow")
-                #Set opening of the gate to 0%
-                getSerialComm().send("0")
+            if gateValueToSend:
+                serial = getSerialComm()
+                if serial:
+                    #Set opening of the gate to 0%
+                    serial.send("0")
+                    gateValueToSend = False
             if measurement >= settings.WL1:
                 stateChange = True
                 state = States.NORMAL
@@ -65,8 +76,12 @@ def loop():
             if stateChange:
                 stateChange = False
                 print("alarm_too_high")
-                #Set opening of the gate to 50%
-                getSerialComm().send("50")
+            if gateValueToSend:
+                serial = getSerialComm()
+                if serial:
+                    #Set opening of the gate to 50%
+                    serial.send("50")
+                    gateValueToSend = False
             if measurement <= settings.WL3:
                 stateChange = True
                 state = States.PRE_ALARM_TOO_HIGH
@@ -77,14 +92,36 @@ def loop():
             if stateChange:
                 stateChange = False
                 print("alarm_too_high_crit")
-                #Set opening of the gate to 100%
-                getSerialComm().send("100")
+            if gateValueToSend:
+                serial = getSerialComm()
+                if serial:
+                    #Set opening of the gate to 100%
+                    serial.send("100")
+                    gateValueToSend = False
             if measurement <= settings.WL4:
                 stateChange = True
                 state = States.ALARM_TOO_HIGH
-        time.sleep(1)
+        time.sleep(5)
+
+def changeState(newState: States):
+    global state
+    global stateChange
+    global gateValueToSend
+    state = newState
+    stateChange = True
+    gateValueToSend = True
+    
+
+main_loop_thread = None
 
 def startMainLoop():
-    thread = threading.Thread(target = loop)
-    thread.start()
-    return thread
+    global main_loop_thread
+
+    if main_loop_thread and main_loop_thread.is_alive():
+        print("Main loop is already running.")
+        return main_loop_thread
+
+    print("Starting main loop...")
+    main_loop_thread = threading.Thread(target=loop, daemon=True)
+    main_loop_thread.start()
+    return main_loop_thread
