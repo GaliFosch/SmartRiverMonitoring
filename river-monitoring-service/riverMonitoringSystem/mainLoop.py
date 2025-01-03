@@ -5,7 +5,7 @@ from django.conf import settings
 from waterLevelInterface.mqtt import signalFrequenceChange
 from waterLevelInterface.mqtt import getLastMeasurment
 
-from gateInterface.serialComm import SerialCommunication
+from gateInterface.serialComm import getSerialComm
 
 @unique
 class States(Enum):
@@ -16,8 +16,6 @@ class States(Enum):
     ALARM_TOO_HIGH_CRITIC = "ALARM-TOO-HIGH-CRITIC"
 
 state = States.NORMAL
-stateChange = True
-gateValueToSend = True
 
 def getState():
     global state
@@ -25,77 +23,70 @@ def getState():
 
 def loop():
     global state
-    global stateChange
-    global gateValueToSend
-    serial = SerialCommunication(settings.SERIAL_PORT, settings.SERIAL_BAUDRATE)
-    time.sleep(5)
+    stateChange = True
+    serial = getSerialComm()
     serial.open()
+    time.sleep(20)
     while True:
         measurement = getLastMeasurment()
-        print(measurement)
         if state == States.NORMAL:
             if stateChange:
                 stateChange = False
                 print("Normal")
                 signalFrequenceChange(settings.F1)
-            if gateValueToSend:
                 #Set opening of the gate to 25%
-                serial.send("25")
-                gateValueToSend = False
+                serial.storeMessage("25")
             if measurement < settings.WL1:
-                changeState(States.ALARM_TOO_LOW)
+                state = States.ALARM_TOO_LOW
+                stateChange = True
             if measurement > settings.WL2:
-                changeState(States.PRE_ALARM_TOO_HIGH)
+                state = States.PRE_ALARM_TOO_HIGH
+                stateChange = True
         elif state == States.ALARM_TOO_LOW:
             if stateChange:
                 stateChange = False
                 print("Alarm_tooLow")
-            if gateValueToSend:
                 #Set opening of the gate to 0%
-                serial.send("0")
-                gateValueToSend = False
+                serial.storeMessage("0")
             if measurement >= settings.WL1:
-                changeState(States.NORMAL)
+                state = States.NORMAL
+                stateChange = True
         elif state == States.PRE_ALARM_TOO_HIGH:
             if stateChange:
                 stateChange = False
                 print("pre_alarm_too_high")
                 signalFrequenceChange(settings.F2)
             if measurement <= settings.WL2:
-                changeState(States.NORMAL)
+                state = States.NORMAL
+                stateChange = True
             if measurement > settings.WL3:
-                changeState(States.ALARM_TOO_HIGH)
+                state = States.ALARM_TOO_HIGH
+                stateChange = True
         elif state == States.ALARM_TOO_HIGH:
             if stateChange:
                 stateChange = False
                 print("alarm_too_high")
-            if gateValueToSend:
                 #Set opening of the gate to 50%
-                serial.send("50")
-                gateValueToSend = False
+                serial.storeMessage("50")
             if measurement <= settings.WL3:
-                changeState(States.PRE_ALARM_TOO_HIGH)
+                state = States.ALARM_TOO_HIGH
+                stateChange = True
             if measurement > settings.WL4:
-                changeState(States.ALARM_TOO_HIGH_CRITIC)
+                state = States.ALARM_TOO_HIGH_CRITIC
+                stateChange = True
         elif state == States.ALARM_TOO_HIGH_CRITIC:
             if stateChange:
                 stateChange = False
                 print("alarm_too_high_crit")
-            if gateValueToSend:
                 #Set opening of the gate to 100%
-                serial.send("100")
-                gateValueToSend = False
+                serial.storeMessage("100")
             if measurement <= settings.WL4:
-                changeState(States.ALARM_TOO_HIGH)
+                state = States.ALARM_TOO_HIGH
+                stateChange = True
+        serial.open()
+        serial.sendStoredMessage()
+        serial.readAndStore()
         time.sleep(5)
-
-def changeState(newState: States):
-    global state
-    global stateChange
-    global gateValueToSend
-    state = newState
-    stateChange = True
-    gateValueToSend = True
     
 
 main_loop_thread = None

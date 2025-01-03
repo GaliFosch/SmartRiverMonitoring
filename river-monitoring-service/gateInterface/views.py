@@ -2,14 +2,13 @@ import json
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render
-
-from .serialComm import SerialCommunication
+from .serialComm import getSerialComm
 
 def setOpeningValue(request):
     rc = 400
     if request.method == "GET":
         value = request.GET.get('value', '')
-        SerialCommunication().send(f"{value}")
+        getSerialComm().storeMessage(f"{value}")
         rc = 200
     return JsonResponse({'errorCode': rc})
 
@@ -17,7 +16,7 @@ def readOpVal(request):
     error = 1
     openingValue = 0
 
-    message = SerialCommunication().read()
+    message = getSerialComm().getLastMessageRead()
     if message != None:
         try:
             openingValue = int(message)
