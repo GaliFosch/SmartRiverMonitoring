@@ -48,19 +48,24 @@ class SerialCommunication:
         with self.lock:
             self.nextMessage = message
 
-    def sendStoredMessage(self):
-        if self.isOpen() and self.nextMessage is not None:
-            message = self.nextMessage
-            try:
-                if not message.endswith('\n'):
-                    message += '\n'
-                self.serial.write(message.encode())
-                print(f"Message sent: {message.strip()}")
-                self.nextMessage = None
-            except Exception as e:
-                print(f"Failed to send message: {e}")
+    def sendStoredMessage(self, maxTries=1):
+        tries = 0
+        while tries<maxTries:
+            if self.isOpen() and self.nextMessage is not None:
+                message = self.nextMessage
+                try:
+                    if not message.endswith('\n'):
+                        message += '\n'
+                    self.serial.write(message.encode())
+                    print(f"Message sent: {message.strip()}")
+                    self.nextMessage = None
+                    break
+                except Exception as e:
+                    print(f"Failed to send message: {e}")
+            tries += 1
+            time.sleep(1)
 
-    def read(self):
+    def _read(self):
         if self.isOpen() and self.serial.in_waiting > 0: 
             try:
                 response = self.serial.readline().decode('utf-8').strip()
@@ -70,13 +75,20 @@ class SerialCommunication:
                 print(f"Failed to read message: {e}")
         return None
     
-    def readAndStore(self):
-        msg = self.read()
-        if msg is not None:
-            self.lastMessageRead = msg
+    def readAndStore(self, maxTries: int = 1):
+        tries = 0
+        while tries<maxTries:
+            msg = self._read()
+            if msg is not None:
+                self.lastMessageRead = msg
+                break
+            tries += 1
+            time.sleep(1)
     
     def getLastMessageRead(self):
-        return self.lastMessageRead
+        with self.lock:
+            return self.lastMessageRead
 
     def __del__(self):
-        self.serial.close()
+        if self.isOpen():
+            self.serial.close()

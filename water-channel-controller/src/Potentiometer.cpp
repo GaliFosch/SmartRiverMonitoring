@@ -11,12 +11,12 @@ int Potentiometer::readValue() {
 }
 
 void Potentiometer::notifyEvent() {
-    Serial.println("DEBUG: Inside Potentiometer::notifyEvent()");
+    //Serial.println("DEBUG: Inside Potentiometer::notifyEvent()");
     int newValue = this->readValue();
     if (this->lastValue != newValue) {
-        Serial.println("DEBUG: Inside if clause in Potentiometer::notifyEvent()");
+        //Serial.println("DEBUG: Inside if clause in Potentiometer::notifyEvent()");
         this->lastValue = newValue;
-        Serial.println(this->lastValue);
+        //Serial.println(this->lastValue);
         Event* ev;
         ev = new PotentiometerCheck(this);
         this->generateEvent(ev);
