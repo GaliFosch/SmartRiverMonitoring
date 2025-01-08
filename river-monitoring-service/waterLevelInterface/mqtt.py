@@ -4,7 +4,7 @@ import json
 
 lastMeasurement = -10000
 
-def getLastMeasurment():
+def getLastMeasurment() -> float:
     global lastMeasurement
     if(lastMeasurement <= -10000):
         from .models import Measurement
