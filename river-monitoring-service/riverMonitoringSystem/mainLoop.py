@@ -24,10 +24,11 @@ def getState():
 def loop():
     global state
     stateChange = True
-    serial = getSerialComm()
+    serial = getSerialComm() 
     serial.open()
     time.sleep(5)
     while True:
+        print(f"mainLoop: {id(serial)}")
         measurement = getLastMeasurment()
         if state == States.NORMAL:
             if stateChange:
@@ -87,6 +88,7 @@ def loop():
             serial.open()
         serial.sendStoredMessage(5)
         serial.readAndStore(5)
+        print(f"lmr {serial.getLastMessageRead()}")
         time.sleep(0.2)
     
 

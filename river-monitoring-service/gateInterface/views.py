@@ -17,7 +17,7 @@ def readOpVal(request):
     openingValue = -1
 
     message = getSerialComm().getLastMessageRead()
-    print(message)
+    print(id(getSerialComm()))
     if message != None:
         try:
             openingValue = int(message)

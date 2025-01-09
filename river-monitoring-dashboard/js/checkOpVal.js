@@ -6,9 +6,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
         xhttp.onload = function () {
             let response = JSON.parse(xhttp.responseText)
             console.log(response)
-            if (response && response.length > 0){
-                if(response["error"] === 0){
-                    openingField.innerText = response["opVal"]
+            if (response){
+                if(response["errorCode"] === 0){
+                    openingField.innerText = "" + response["opVal"]
                 }
             }
         }

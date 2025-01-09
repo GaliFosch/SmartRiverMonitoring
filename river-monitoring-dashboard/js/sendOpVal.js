@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
         let xhttp = new XMLHttpRequest()
         let url = setOpValUrl + input.value
         try {
-            xhttp.open("GET", setOpValUrl, true)
+            xhttp.open("GET", url, true)
             xhttp.send()   
         } catch (error) {
             console.log("ERROR: Error in send opening vals")

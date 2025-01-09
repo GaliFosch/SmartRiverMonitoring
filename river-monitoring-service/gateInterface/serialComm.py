@@ -64,24 +64,20 @@ class SerialCommunication:
                     print(f"Failed to send message: {e}")
             tries += 1
             time.sleep(0.2)
-
-    def _read(self):
-        if self.isOpen() and self.serial.in_waiting > 0: 
-            try:
-                response = self.serial.readline().decode('utf-8').strip()
-                print(f"Message read: {response}")
-                return response
-            except Exception as e:
-                print(f"Failed to read message: {e}")
-        return None
     
     def readAndStore(self, maxTries: int = 1):
         tries = 0
         while tries<maxTries:
-            msg = self._read()
-            if msg is not None:
-                self.lastMessageRead = msg
-                print("saved msg:" + msg)
+            if self.isOpen() and self.serial.in_waiting > 0: 
+                try:
+                    response = self.serial.readline().decode('utf-8').strip()
+                    with self.lock:
+                        self.lastMessageRead = response
+                    print(f"Message read: {self.lastMessageRead}")
+                    break
+                except Exception as e:
+                    print(f"Failed to read message: {e}")
+            else:
                 break
             tries += 1
             time.sleep(0.2)

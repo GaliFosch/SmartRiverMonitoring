@@ -1,3 +1,6 @@
-from .serialComm import initSerialComm
+from .serialComm import getSerialComm, initSerialComm
+
 
 initSerialComm()
+
+print(f"git: {id(getSerialComm())}")
