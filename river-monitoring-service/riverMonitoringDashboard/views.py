@@ -31,7 +31,8 @@ def get_data(request):
     return response
     
 def get_state(request):
+    state = getState().name
     return JsonResponse({
         "errorCode": 0,
-        "state": getState()
+        "state": state
         }, safe=False)

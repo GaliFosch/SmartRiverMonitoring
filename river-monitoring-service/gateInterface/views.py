@@ -14,9 +14,10 @@ def setOpeningValue(request):
 
 def readOpVal(request):
     error = 1
-    openingValue = 0
+    openingValue = -1
 
     message = getSerialComm().getLastMessageRead()
+    print(message)
     if message != None:
         try:
             openingValue = int(message)

@@ -26,7 +26,7 @@ def loop():
     stateChange = True
     serial = getSerialComm()
     serial.open()
-    time.sleep(20)
+    time.sleep(5)
     while True:
         measurement = getLastMeasurment()
         if state == States.NORMAL:
@@ -83,15 +83,11 @@ def loop():
             if measurement < settings.WL4:
                 state = States.ALARM_TOO_HIGH
                 stateChange = True
-        try:
-            if not serial.isOpen():
-                serial.open()
-            serial.sendStoredMessage(5)
-            serial.readAndStore(5)
-        except Exception as e:
-            print(f"Error in main loop: {e}")
-            time.sleep(2)  # Attendi prima di ritentare
-        time.sleep(1)
+        if not serial.isOpen():
+            serial.open()
+        serial.sendStoredMessage(5)
+        serial.readAndStore(5)
+        time.sleep(0.2)
     
 
 main_loop_thread = None

@@ -12,8 +12,13 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 }
             }
         }
-        xhttp.open("GET", opValIndex, true)
-        xhttp.send()
+        try {
+            xhttp.open("GET", opValIndex, true)
+            xhttp.send()   
+        } catch (error) {
+            console.log("ERROR: Error in checkOpVal")
+            console.log(error)
+        }
     }
     setInterval(checkUpdate,1000);
 })

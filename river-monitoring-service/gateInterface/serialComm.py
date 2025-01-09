@@ -63,7 +63,7 @@ class SerialCommunication:
                 except Exception as e:
                     print(f"Failed to send message: {e}")
             tries += 1
-            time.sleep(1)
+            time.sleep(0.2)
 
     def _read(self):
         if self.isOpen() and self.serial.in_waiting > 0: 
@@ -81,9 +81,10 @@ class SerialCommunication:
             msg = self._read()
             if msg is not None:
                 self.lastMessageRead = msg
+                print("saved msg:" + msg)
                 break
             tries += 1
-            time.sleep(1)
+            time.sleep(0.2)
     
     def getLastMessageRead(self):
         with self.lock:
