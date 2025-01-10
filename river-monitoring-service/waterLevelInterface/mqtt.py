@@ -47,5 +47,5 @@ client.connect(
 )
 
 def signalFrequenceChange(frequency):
-    result = client.publish("SRM/waterlevel", "{ \"type\" : \"FREQ\", \"value\" : " + str(frequency) + "}")
+    result = client.publish("SRM/frequency", "{ \"type\" : \"FREQ\", \"value\" : " + str(frequency) + "}")
     result.wait_for_publish()

@@ -18,8 +18,10 @@ class SonarTask : public Task {
         // test.mosquitto.org
         // mqtt.eclipse.org
         // broker.mqtt-dashboard.coms
-        const char* mqtt_server = "test.mosquitto.org";
-        const char* topic = "SRM/waterlevel";
+        // const char* mqtt_server = "test.mosquitto.org";
+        const char* mqtt_server = "192.168.98.134";
+        const char* sendTopic = "SRM/waterlevel";
+        const char* listenTopic = "SRM/frequency";
         void sendMessage();
         void reconnect();
 
