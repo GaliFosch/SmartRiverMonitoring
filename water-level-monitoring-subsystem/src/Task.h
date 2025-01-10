@@ -7,6 +7,11 @@ class Task {
   int myPeriod;
   int timeElapsed;
   
+protected:
+  void changePeriod(int period) {
+    this->myPeriod = period;
+  }
+
 public:
   unsigned int totalTimeElapsed;
 

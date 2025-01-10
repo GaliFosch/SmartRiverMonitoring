@@ -2,6 +2,7 @@
 #include "Globals.h"
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
+#include <ArduinoJson.h>
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -11,18 +12,34 @@ SonarTask::SonarTask(int trigPin, int echoPin) {
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
-    // Serial.println(String("Message arrived on [") + topic + "]" +  );
-    String payloadStr = "";
-    for (unsigned int i = 0; i < length; i++) {
-        payloadStr += (char) payload[i];
-    }
-    Serial.println(payloadStr);
+
 }
 
 void SonarTask::init(int period) {
     Task::init(period);
     client.setServer(mqtt_server, 1883);
-    client.setCallback(callback);
+    client.setCallback([this](char* topic, byte* payload, unsigned int length) {
+        String payloadStr = "";
+        for (unsigned int i = 0; i < length; i++) {
+            payloadStr += (char) payload[i];
+        }
+
+        //Parse JSON
+        JsonDocument doc;
+        DeserializationError error = deserializeJson(doc, payloadStr);
+
+        if (error) {
+            Serial.print("Failed to parse JSON: ");
+            Serial.println(error.f_str());
+            return;
+        }
+
+        if (doc["type"] == "FREQ") {
+            Serial.println("Yuppidoooo " + String(doc["value"]));
+            int newPeriod = doc["value"];
+            this->changePeriod(newPeriod);
+        }
+    });
 }
 
 void SonarTask::tick() {
@@ -38,7 +55,12 @@ void SonarTask::tick() {
 
 void SonarTask::sendMessage() {
     float value = this->sonar->readValue();
-    String payload = "[ \"VALUE\", {\"value\": " + String(value, 2) + "}]";
+    JsonDocument doc;
+    doc["type"] = "VALUE";
+    doc["value"] = value;
+    String payload; 
+    serializeJson(doc, payload);
+    Serial.println(payload);
     client.publish(sendTopic, payload.c_str());
 }
 
