@@ -27,15 +27,16 @@ void SonarTask::init(int period) {
         //Parse JSON
         JsonDocument doc;
         DeserializationError error = deserializeJson(doc, payloadStr);
-
+        
+        #ifdef DEBUG
         if (error) {
             Serial.print("Failed to parse JSON: ");
             Serial.println(error.f_str());
             return;
         }
+        #endif
 
         if (doc["type"] == "FREQ") {
-            Serial.println("Yuppidoooo " + String(doc["value"]));
             int newPeriod = doc["value"];
             this->changePeriod(newPeriod);
         }
@@ -60,20 +61,29 @@ void SonarTask::sendMessage() {
     doc["value"] = value;
     String payload; 
     serializeJson(doc, payload);
+    #ifdef DEBUG
     Serial.println(payload);
+    #endif
     client.publish(sendTopic, payload.c_str());
 }
 
 void SonarTask::reconnect() {
+    #ifdef DEBUG
     Serial.println("DEBUG: attempting to connect");
+    #endif
     String clientId = String("esiot-2122-water-service-")+String(random(0xffff), HEX);
     if (client.connect(clientId.c_str())) {
+        #ifdef DEBUG
         Serial.println("DEBUG: mqtt connection started");
+        #endif
         client.subscribe(listenTopic);
-    } else {
+    }
+    #ifdef DEBUG 
+    else {
         Serial.print(WiFi.localIP());
         Serial.print("MQTT connection failed, rc=");
         Serial.println(client.state());
-}
+    }
+    #endif
 }
 
