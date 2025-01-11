@@ -85,7 +85,9 @@ class ChannelControllerFSM : public AsyncFSM {
           {
           this->currState = AUTOMATIC;
           this->changeGatePosition(this->servo->getPosition());
+          #ifdef DEBUG
           this->console->log("DEBUG: State change MAN->AUT");
+          #endif
           }
           break;
         case POT_CHECK_EVENT:
@@ -95,29 +97,39 @@ class ChannelControllerFSM : public AsyncFSM {
           break;
           }
         default:
+          #ifdef DEBUG
           this->console->log("DEBUG: Default case reached in ChannelControllerFSM::handleManual");
+          #endif
           break;
       }
     };
 
     void handleAutomatic(Event *ev) {
+      #ifdef DEBUG
       this->console->log("DEBUG: Evento ricevuto in AUTOMATIC");
+      #endif
       switch (ev->getType()) {
         case BUTTON_PRESSED_EVENT:
           {
           this->currState = MANUAL;
+          #ifdef DEBUG
           this->console->log("DEBUG: State change AUT->MAN");
+          #endif
           break;
           }
         case POS_RECEIVED_EVENT:
           {
+          #ifdef DEBUG
           this->console->log("received position");
+          #endif
           int pos = this->serialComm->getLastValue();
           this->changeGatePosition(pos);
           break;
           }
         default:
+          #ifdef DEBUG
           this->console->log("DEBUG: Default case reached in ChannelControllerFSM::handleAutomatic");
+          #endif
           break;
       }
     }
@@ -157,7 +169,9 @@ void setup() {
   serialComm = new SerialComm();
   fsm = new ChannelControllerFSM(button, console, servo, lcd, pot, serialComm);
   timeLastCheck = millis();
+  #ifdef DEBUG
   console->log("FINE SETUP");
+  #endif
 }
 
 void loop() {
