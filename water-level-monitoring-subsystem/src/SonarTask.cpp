@@ -37,7 +37,8 @@ void SonarTask::init(int period) {
         #endif
 
         if (doc["type"] == "FREQ") {
-            int newPeriod = doc["value"];
+            double newFrequency = doc["value"];
+            int newPeriod = (int) (1000/newFrequency);
             this->changePeriod(newPeriod);
         }
     });
