@@ -22,8 +22,8 @@ WL4 = 1.3
 SENSOR_HEIGHT = 1.5
 
 # Frequencies
-F1 = 5000
-F2 = 7000
+F1 = 0.5
+F2 = 1
 
 # MQTT broker settings
 MQTT_SERVER = 'localhost'
