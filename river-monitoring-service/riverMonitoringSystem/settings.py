@@ -18,6 +18,9 @@ WL2 = 0.6
 WL3 = 1
 WL4 = 1.3
 
+# SensorHeight
+SENSOR_HEIGHT = 1.5
+
 # Frequencies
 F1 = 5000
 F2 = 7000
