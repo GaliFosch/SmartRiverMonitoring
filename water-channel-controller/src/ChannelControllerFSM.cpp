@@ -1,15 +1,12 @@
 #include <ChannelControllerFSM.h>
 
-
-ChannelControllerFSM::ChannelControllerFSM (ButtonImpl* button, 
-    Console* console, 
+ChannelControllerFSM::ChannelControllerFSM (ButtonImpl* button,
     ServoMotor* servo,
     LiquidCrystal_I2C* lcd, 
     Potentiometer* pot,
     SerialComm* serialComm
     ) {
     this->button = button;
-    this->console = console;
     this->servo = servo;
     this->lcd = lcd;
     this->pot = pot;
@@ -35,7 +32,7 @@ void ChannelControllerFSM::handleEvent(Event* ev) {
         break;
     default:
         #ifdef DEBUG
-        this->console->log("DEBUG: Default value reached in ChannelControllerFSM::handleEvent");
+        Serial.println("DEBUG: Default value reached in ChannelControllerFSM::handleEvent");
         #endif
     }
 }
@@ -55,7 +52,7 @@ void ChannelControllerFSM::handleManual(Event* ev) {
         this->currState = AUTOMATIC;
         this->changeGatePosition(this->servo->getPosition());
         #ifdef DEBUG
-        this->console->log("DEBUG: State change MAN->AUT");
+        Serial.println("DEBUG: State change MAN->AUT");
         #endif
         }
         break;
@@ -67,7 +64,7 @@ void ChannelControllerFSM::handleManual(Event* ev) {
         }
     default:
         #ifdef DEBUG
-        this->console->log("DEBUG: Default case reached in ChannelControllerFSM::handleManual");
+        Serial.println("DEBUG: Default case reached in ChannelControllerFSM::handleManual");
         #endif
         break;
     }
@@ -75,21 +72,21 @@ void ChannelControllerFSM::handleManual(Event* ev) {
 
 void ChannelControllerFSM::handleAutomatic(Event *ev) {
     #ifdef DEBUG
-    this->console->log("DEBUG: Evento ricevuto in AUTOMATIC");
+    Serial.println("DEBUG: Evento ricevuto in AUTOMATIC");
     #endif
     switch (ev->getType()) {
     case BUTTON_PRESSED_EVENT:
         {
         this->currState = MANUAL;
         #ifdef DEBUG
-        this->console->log("DEBUG: State change AUT->MAN");
+        Serial.println("DEBUG: State change AUT->MAN");
         #endif
         break;
         }
     case POS_RECEIVED_EVENT:
         {
         #ifdef DEBUG
-        this->console->log("received position");
+        Serial.println("received position");
         #endif
         int pos = this->serialComm->getLastValue();
         this->changeGatePosition(pos);
@@ -97,7 +94,7 @@ void ChannelControllerFSM::handleAutomatic(Event *ev) {
         }
     default:
         #ifdef DEBUG
-        this->console->log("DEBUG: Default case reached in ChannelControllerFSM::handleAutomatic");
+        Serial.println("DEBUG: Default case reached in ChannelControllerFSM::handleAutomatic");
         #endif
         break;
     }

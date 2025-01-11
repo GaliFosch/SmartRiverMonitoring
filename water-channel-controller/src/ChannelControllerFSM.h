@@ -17,8 +17,7 @@ enum State {
 
 class ChannelControllerFSM : public AsyncFSM {
   public:
-    ChannelControllerFSM (ButtonImpl* button, 
-        Console* console, 
+    ChannelControllerFSM (ButtonImpl* button,
         ServoMotor* servo,
         LiquidCrystal_I2C* lcd, 
         Potentiometer* pot,
@@ -34,7 +33,6 @@ class ChannelControllerFSM : public AsyncFSM {
   private:
     ServoMotor* servo;
     ButtonImpl* button;
-    Console* console;
     SerialComm* serialComm;
     LiquidCrystal_I2C* lcd;
     Potentiometer* pot;
