@@ -10,6 +10,8 @@
 #include <Potentiometer.h>
 #include "SerialComm.h"
 
+#define POLL_PERIOD 500
+
 enum State {
   AUTOMATIC,
   MANUAL
@@ -30,6 +32,8 @@ class ChannelControllerFSM : public AsyncFSM {
 
     State getCurrentState();
 
+    void checkEvents();
+
   private:
     ServoMotor* servo;
     ButtonImpl* button;
@@ -43,6 +47,7 @@ class ChannelControllerFSM : public AsyncFSM {
     void handleAutomatic(Event *ev);
 
     void changeGatePosition(int value);
+    
 };
 
 #endif
