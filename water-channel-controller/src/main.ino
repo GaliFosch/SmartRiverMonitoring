@@ -29,7 +29,7 @@ void setup() {
   ServoMotor* servo = new ServoMotor(SERVO_PIN);
   LiquidCrystal_I2C* lcd = new LiquidCrystal_I2C(0x27,20,4);
   serialComm = new SerialComm();
-  fsm = new ChannelControllerFSM(button, console, servo, lcd, pot, serialComm);
+  fsm = new ChannelControllerFSM(button, servo, lcd, pot, serialComm);
   timeLastCheck = millis();
   #ifdef DEBUG
   console->log("FINE SETUP");

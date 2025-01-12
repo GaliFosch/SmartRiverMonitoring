@@ -34,6 +34,7 @@ void ChannelControllerFSM::handleEvent(Event* ev) {
         #ifdef DEBUG
         Serial.println("DEBUG: Default value reached in ChannelControllerFSM::handleEvent");
         #endif
+        break;
     }
 }
 
