@@ -14,7 +14,7 @@
 #define SERVO_PIN 10
 
 
-Potentiometer* pot = new Potentiometer(POT_PIN);
+Potentiometer* pot;
 ChannelControllerFSM* fsm;
 long timeLastCheck;
 SerialComm* serialComm;
@@ -24,7 +24,7 @@ void setup() {
   Serial.begin(9600);
   while (!Serial){}
   #endif
-  Potentiometer* pot = new Potentiometer(POT_PIN);
+  pot = new Potentiometer(POT_PIN);
   ButtonImpl* button = new ButtonImpl(BUTTON_PIN);
   ServoMotor* servo = new ServoMotor(SERVO_PIN);
   LiquidCrystal_I2C* lcd = new LiquidCrystal_I2C(0x27,20,4);
@@ -37,5 +37,12 @@ void setup() {
 }
 
 void loop() {
+  if ((millis() - timeLastCheck > POLL_PERIOD)) {
+      timeLastCheck = millis();
+      if(fsm->getCurrentState()==MANUAL)
+          fsm->getPot()->notifyEvent();
+      else
+          serialComm->serialCheck();
+  }
   fsm->checkEvents();
 }

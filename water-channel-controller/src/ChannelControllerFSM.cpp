@@ -46,17 +46,6 @@ State ChannelControllerFSM::getCurrentState() {
     return currState;
 }
 
-void ChannelControllerFSM::checkEvents(){
-    static long timeLastCheck = millis();
-    if ((millis() - timeLastCheck > POLL_PERIOD)) {
-        timeLastCheck = millis();
-        if(this->getCurrentState()==MANUAL)
-            this->getPot()->notifyEvent();
-        else
-            serialComm->serialCheck();
-        this->AsyncFSM::checkEvents();
-    }
-}
 
 void ChannelControllerFSM::handleManual(Event* ev) {
     switch (ev->getType()) {

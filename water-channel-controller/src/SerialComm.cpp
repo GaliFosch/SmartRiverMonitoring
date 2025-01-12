@@ -20,10 +20,8 @@ bool isInteger(String s) {
 
 SerialComm::SerialComm()
 {
-    if(!Serial){
-        Serial.begin(9600);
-        while(!Serial){}
-    }
+  Serial.begin(9600);
+  while(!Serial){}
 }
 
 void SerialComm::notifyInterrupt(int pin)

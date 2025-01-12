@@ -32,8 +32,6 @@ class ChannelControllerFSM : public AsyncFSM {
 
     State getCurrentState();
 
-    void checkEvents();
-
   private:
     ServoMotor* servo;
     ButtonImpl* button;
