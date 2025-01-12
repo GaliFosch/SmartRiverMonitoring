@@ -19,29 +19,10 @@ int ServoMotor::fromAngleToPercent(int angle) {
 }
 
 void ServoMotor::changePosition(int percent) {
-    //float coeff = (2250.0 - 750.0) / 180;
     float angle = this->fromPercentToAngle(percent);
-    //servo.write(750 + angle * coeff);
-    //this->servo.write(this->fromPercentToAngle(percent));
     this->on();
-
-    // TODO: decidere cosa fare... Così funziona meglio
     servo.write(angle);
     delay(500);
-    // if(angle > curr){
-    //     for(int i = curr; i<=angle; i++){
-    //         //servo.write(750 + i * coeff);
-    //         servo.write(i);
-    //         delay(10);
-    //     }
-    // }else if(angle < curr){
-    //     Serial.println("angle< curr");
-    //     for(int i = angle; i <= curr; i++){
-    //         //servo.write(750 + i * coeff);
-    //         servo.write(i);
-    //         delay(10);
-    //     }
-    // }
     this->off();
 
     this->position = percent;
