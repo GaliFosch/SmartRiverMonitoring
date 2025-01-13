@@ -1,6 +1,8 @@
 #include "Potentiometer.h"
 #include "Arduino.h"
 
+#define DEBUG
+
 Potentiometer::Potentiometer(int pin) {
     this->pin = pin;
     this->bindInterrupt(pin);
@@ -11,12 +13,18 @@ int Potentiometer::readValue() {
 }
 
 void Potentiometer::notifyEvent() {
-    //Serial.println("DEBUG: Inside Potentiometer::notifyEvent()");
+    #ifdef DEBUG
+    Serial.println("DEBUG: Inside Potentiometer::notifyEvent()");
+    #endif
     int newValue = this->readValue();
     if (this->lastValue != newValue) {
-        //Serial.println("DEBUG: Inside if clause in Potentiometer::notifyEvent()");
+        #ifdef DEBUG
+        Serial.println("DEBUG: Inside if clause in Potentiometer::notifyEvent()");
+        #endif
         this->lastValue = newValue;
-        //Serial.println(this->lastValue);
+        #ifdef DEBUG
+        Serial.println(this->lastValue);
+        #endif
         Event* ev;
         ev = new PotentiometerCheck(this);
         this->generateEvent(ev);
