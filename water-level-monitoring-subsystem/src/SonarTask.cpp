@@ -28,13 +28,11 @@ void SonarTask::init(int period) {
         JsonDocument doc;
         DeserializationError error = deserializeJson(doc, payloadStr);
         
-        #ifdef DEBUG
         if (error) {
             Serial.print("Failed to parse JSON: ");
             Serial.println(error.f_str());
             return;
         }
-        #endif
 
         if (doc["type"] == "FREQ") {
             double newFrequency = doc["value"];
