@@ -13,9 +13,6 @@
 #define POT_PIN A1
 #define SERVO_PIN 10
 
-#define DEBUG
-
-
 Potentiometer* pot;
 ChannelControllerFSM* fsm;
 long timeLastCheck;

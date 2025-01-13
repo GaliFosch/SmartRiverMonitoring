@@ -1,8 +1,6 @@
 #include "Potentiometer.h"
 #include "Arduino.h"
 
-#define DEBUG
-
 Potentiometer::Potentiometer(int pin) {
     this->pin = pin;
     this->bindInterrupt(pin);

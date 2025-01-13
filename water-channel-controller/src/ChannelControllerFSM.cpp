@@ -1,7 +1,5 @@
 #include <ChannelControllerFSM.h>
 
-#define DEBUG
-
 ChannelControllerFSM::ChannelControllerFSM (ButtonImpl* button,
     ServoMotor* servo,
     LiquidCrystal_I2C* lcd, 
