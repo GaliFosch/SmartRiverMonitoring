@@ -36,7 +36,9 @@ const myChart = new Chart(ctx, {
                 title: { 
                     display: true, 
                     text: 'Level' 
-                } 
+                },
+                min: 0,
+                max: 1.5
             }
         }
     }
@@ -60,7 +62,7 @@ function fetchData() {
 
             if (response.length > 0) {
                 const lastValue = response[response.length - 1]['value'];
-                document.getElementById('currentWaterLevel').innerText = String(lastValue);
+                document.getElementById('currentWaterLevel').innerText = String(lastValue.toFixed(2));
             }
 
             myChart.update();

@@ -11,10 +11,6 @@ SonarTask::SonarTask(int trigPin, int echoPin) {
     this->sonar = new Sonar(trigPin, echoPin);
 }
 
-void callback(char* topic, byte* payload, unsigned int length) {
-
-}
-
 void SonarTask::init(int period) {
     Task::init(period);
     client.setServer(mqtt_server, 1883);
