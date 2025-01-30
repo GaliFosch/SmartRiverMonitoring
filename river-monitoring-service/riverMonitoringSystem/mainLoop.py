@@ -40,7 +40,7 @@ def loop():
             if measurement < settings.WL1:
                 state = States.ALARM_TOO_LOW
                 stateChange = True
-            if measurement >= settings.WL2:
+            if measurement > settings.WL2:
                 state = States.PRE_ALARM_TOO_HIGH
                 stateChange = True
         elif state == States.ALARM_TOO_LOW:
@@ -57,10 +57,10 @@ def loop():
                 stateChange = False
                 print("pre_alarm_too_high")
                 signalFrequenceChange(settings.F2)
-            if measurement < settings.WL2:
+            if measurement <= settings.WL2:
                 state = States.NORMAL
                 stateChange = True
-            if measurement >= settings.WL3:
+            if measurement > settings.WL3:
                 state = States.ALARM_TOO_HIGH
                 stateChange = True
         elif state == States.ALARM_TOO_HIGH:
@@ -69,10 +69,10 @@ def loop():
                 print("alarm_too_high")
                 #Set opening of the gate to 50%
                 serial.storeMessage("50")
-            if measurement < settings.WL3:
+            if measurement <= settings.WL3:
                 state = States.PRE_ALARM_TOO_HIGH
                 stateChange = True
-            if measurement >= settings.WL4:
+            if measurement > settings.WL4:
                 state = States.ALARM_TOO_HIGH_CRITIC
                 stateChange = True
         elif state == States.ALARM_TOO_HIGH_CRITIC:
@@ -81,7 +81,7 @@ def loop():
                 print("alarm_too_high_crit")
                 #Set opening of the gate to 100%
                 serial.storeMessage("100")
-            if measurement < settings.WL4:
+            if measurement <= settings.WL4:
                 state = States.ALARM_TOO_HIGH
                 stateChange = True
         if not serial.isOpen():

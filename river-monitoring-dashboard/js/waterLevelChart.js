@@ -38,7 +38,7 @@ const myChart = new Chart(ctx, {
                     text: 'Level' 
                 },
                 min: 0,
-                max: 1.5
+                max: 0.60
             }
         }
     }

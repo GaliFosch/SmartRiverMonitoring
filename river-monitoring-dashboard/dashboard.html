@@ -8,13 +8,6 @@
 <body>
     <h1>River Monitoring Dashboard</h1>
     <section>
-        <h2>Water Level</h2>
-        <!--Grafico del livello dell'acqua-->
-        <div>
-            <canvas id="waterLevelChart"></canvas>
-        </div>
-    </section>
-    <section>
         <h2>Data</h2>
         <table>
             <tr>
@@ -36,6 +29,13 @@
             <label for="opVal">Opening Value</label><input type="number" id="opVal" placeholder="0" required/>
             <input type="submit" value="Send"/>
         </form>
+    </section>
+    <section>
+        <h2>Water Level</h2>
+        <!--Grafico del livello dell'acqua-->
+        <div>
+            <canvas id="waterLevelChart"></canvas>
+        </div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/luxon@^2"></script>
